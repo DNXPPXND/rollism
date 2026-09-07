@@ -1,0 +1,846 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap');
+
+  #ledger-root {
+    --bg-main: #F1F5F9;
+    --card-bg: #FFFFFF;
+    --border-color: #CBD5E1;
+    --text-main: #0F172A;
+    --text-sub: #475569;
+    
+    --green-bg: #DCFCE7;
+    --green-text: #15803D;
+    --green-border: #86EFAC;
+    
+    --orange-bg: #FFEDD5;
+    --orange-text: #C2410C;
+    --orange-border: #FDBA74;
+    
+    --red-bg: #FEE2E2;
+    --red-text: #B91C1C;
+    --red-border: #FCA5A5;
+    
+    --blue-btn: #2563EB;
+    
+    font-family: 'Prompt', sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-main);
+    padding: 16px 12px 60px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    font-size: 18px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #ledger-root * { box-sizing: border-box; }
+  #ledger-root .wrap { max-width: 600px; margin: 0 auto; }
+
+  /* Header */
+  #ledger-root .app-header {
+    background: var(--card-bg);
+    padding: 16px;
+    border-radius: 16px;
+    border: 2px solid var(--border-color);
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #ledger-root .app-header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-main);
+  }
+  #ledger-root .app-header p {
+    margin: 2px 0 0;
+    font-size: 15px;
+    color: var(--text-sub);
+  }
+  #ledger-root .top-btns {
+    display: flex;
+    gap: 8px;
+  }
+  #ledger-root .btn-sub-action {
+    font-family: 'Prompt', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 12px;
+    background: #E2E8F0;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    cursor: pointer;
+  }
+
+  /* Date Control Bar */
+  #ledger-root .date-control-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  #ledger-root .date-nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+  #ledger-root .btn-date-nav {
+    font-family: 'Prompt', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px 16px;
+    background: #F8FAFC;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-main);
+    cursor: pointer;
+    min-height: 48px;
+  }
+  #ledger-root .btn-date-nav:active { background: #CBD5E1; }
+  #ledger-root .date-picker-big {
+    font-family: 'Prompt', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background: #FFF;
+    color: var(--text-main);
+    text-align: center;
+  }
+  #ledger-root .date-text-display {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+    text-align: center;
+  }
+  #ledger-root .btn-today-pill {
+    font-family: 'Prompt', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    background: #EFF6FF;
+    color: #1D4ED8;
+    border: 1.5px solid #BFDBFE;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  /* Big Metric Cards */
+  #ledger-root .summary-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  #ledger-root .metric-card-big {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #ledger-root .metric-card-big.cost { background: var(--orange-bg); border-color: var(--orange-border); }
+  #ledger-root .metric-card-big.revenue { background: var(--green-bg); border-color: var(--green-border); }
+  #ledger-root .metric-card-big.profit-pos { background: var(--green-bg); border-color: var(--green-border); }
+  #ledger-root .metric-card-big.profit-neg { background: var(--red-bg); border-color: var(--red-border); }
+
+  #ledger-root .metric-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-sub);
+  }
+  #ledger-root .metric-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 800;
+  }
+  #ledger-root .cost .metric-num { color: var(--orange-text); }
+  #ledger-root .revenue .metric-num { color: var(--green-text); }
+  #ledger-root .profit-pos .metric-num { color: var(--green-text); }
+  #ledger-root .profit-neg .metric-num { color: var(--red-text); }
+
+  /* Recorded List */
+  #ledger-root .section-title {
+    font-size: 19px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--text-main);
+  }
+  #ledger-root .records-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  #ledger-root .record-item {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  #ledger-root .record-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #ledger-root .record-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+  #ledger-root .record-cat {
+    font-size: 13px;
+    font-weight: 700;
+    background: #E0E7FF;
+    color: #3730A3;
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  #ledger-root .record-qty {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-sub);
+  }
+  #ledger-root .record-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F8FAFC;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #E2E8F0;
+    font-size: 16px;
+  }
+  #ledger-root .record-num-bold {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+  #ledger-root .btn-delete-big {
+    background: #FEE2E2;
+    color: var(--red-text);
+    border: 1px solid var(--red-border);
+    font-family: 'Prompt', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    align-self: flex-end;
+  }
+
+  /* Form Elder */
+  #ledger-root .add-card-elder {
+    background: var(--card-bg);
+    border: 3px solid #94A3B8;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  #ledger-root .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  #ledger-root .field-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  #ledger-root .add-card-elder select, #ledger-root .add-card-elder input {
+    font-family: 'Prompt', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 12px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: #F8FAFC;
+    color: var(--text-main);
+    outline: none;
+    width: 100%;
+    min-height: 52px;
+  }
+  #ledger-root .add-card-elder select:focus, #ledger-root .add-card-elder input:focus {
+    border-color: var(--blue-btn);
+    background: #FFF;
+  }
+  #ledger-root .form-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  #ledger-root .auto-calc-box {
+    background: #FEF3C7;
+    border: 2px solid #FCD34D;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: none;
+  }
+  #ledger-root .btn-submit-elder {
+    font-family: 'Prompt', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    background: var(--blue-btn);
+    color: #FFF;
+    border: none;
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    width: 100%;
+    min-height: 56px;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    margin-top: 6px;
+  }
+  #ledger-root .btn-submit-elder:active { background: #1D4ED8; }
+  #ledger-root .error-msg { color: var(--red-text); font-size: 15px; font-weight: 700; margin-top: 6px; }
+
+  /* History Accordion */
+  #ledger-root .history-accordion {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 14px;
+    font-size: 18px;
+    font-weight: 800;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  #ledger-root .history-body { display: none; margin-top: 12px; }
+  #ledger-root .history-body.open { display: block; }
+
+  #ledger-root .grand-summary {
+    background: #F8FAFC;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  #ledger-root .grand-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  #ledger-root .empty-box {
+    text-align: center;
+    color: var(--text-sub);
+    padding: 24px;
+    font-size: 17px;
+    font-weight: 600;
+    background: var(--card-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 16px;
+  }
+</style>
+
+<div id="ledger-root">
+  <div class="wrap" id="ledger-wrap">
+    <div class="empty-box">กำลังโหลดข้อมูล…</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const INGREDIENT_GROUPS = [
+    {
+      category: "สุกี้โรล",
+      items: [
+        { name: "ผักกาด", unit: "โล" },
+        { name: "หมูบด", unit: "โล" },
+        { name: "หมูเด้ง", unit: "ถุง" },
+        { name: "วุ้นเส้น", unit: "ถุง" },
+        { name: "แครอท", unit: "หัว" },
+        { name: "รากผักชี", unit: "กำ" },
+        { name: "กระเทียม", unit: "ถุง" },
+        { name: "พริกไทย", unit: "ถุง" },
+        { name: "ไข่", unit: "แผง" },
+        { name: "ซอสหอยนางรม", unit: "แกลอน" },
+        { name: "ซอสฝาเขียว", unit: "ขวด" },
+        { name: "ซีอิ้วขาว", unit: "ขวด" },
+        { name: "แป้ง", unit: "ถุง" }
+      ]
+    },
+    {
+      category: "น้ำจิ้ม",
+      items: [
+        { name: "พริก", unit: "ถุง" },
+        { name: "กระเทียม (น้ำจิ้ม)", nameDisplay: "กระเทียม", unit: "ถุง" },
+        { name: "น้ำส้มสายชู", unit: "ขวด" },
+        { name: "น้ำกระเทียมดอง", unit: "ขวด" },
+        { name: "เต้าหู้ยี้", unit: "โถ" },
+        { name: "ซอสมะเขือเทศ", unit: "ถุง" },
+        { name: "ซอสพริก", unit: "แกลอน" },
+        { name: "งา", unit: "ถุง" },
+        { name: "น้ำตาล", unit: "ถุง" },
+        { name: "น้ำมันงา", unit: "ขวด" },
+        { name: "ผงหม่าล่า", unit: "ถุง" },
+        { name: "น้ำจิ้มงา", unit: "ถุง" }
+      ]
+    },
+    {
+      category: "อื่นๆ",
+      items: [
+        { name: "ขายได้", unit: "กล่อง", defaultPrice: 55 },
+        { name: "กล่อง", unit: "แพ็ค" },
+        { name: "ถุง", unit: "แพ็ค" },
+        { name: "น้ำแข็ง", unit: "ถุง" },
+        { name: "ค่าที่ขายของ", unit: "วัน" },
+        { name: "แก๊ส", unit: "ถัง" },
+        { name: "ถุงมือ", unit: "แพ็ค" },
+        { name: "ตะเกียบ", unit: "แพ็ค" }
+      ]
+    }
+  ];
+
+  const STORAGE_KEY = 'daily-ledger-entries';
+  let entries = [];
+  let selectedDate = todayStr();
+  let overviewOpen = false;
+  let loaded = false;
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  function todayStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+  }
+
+  function fmtDateThai(dateStr) {
+    const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return `${d} ${months[m - 1]} ${y + 543}`;
+  }
+
+  function money(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.abs(n).toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  }
+
+  function addDays(dateStr, delta) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    dt.setDate(dt.getDate() + delta);
+    return `${dt.getFullYear()}-${pad2(dt.getMonth() + 1)}-${pad2(dt.getDate())}`;
+  }
+
+  async function loadEntries() {
+    try {
+      const res = await window.storage.get(STORAGE_KEY, false);
+      const raw = res && res.value ? JSON.parse(res.value) : [];
+      entries = raw.map(e => ({
+        id: e.id,
+        date: e.date,
+        name: e.name,
+        category: e.category || '',
+        qty: e.qty !== undefined ? parseFloat(e.qty) : 1,
+        unit: e.unit || '',
+        cost: e.cost !== undefined ? e.cost : 0,
+        revenue: e.revenue !== undefined ? e.revenue : 0
+      }));
+    } catch (e) {
+      entries = [];
+    }
+    loaded = true;
+    render();
+  }
+
+  async function saveEntries() {
+    try {
+      await window.storage.set(STORAGE_KEY, JSON.stringify(entries), false);
+    } catch (e) {
+      console.error('บันทึกไม่สำเร็จ', e);
+    }
+  }
+
+  function entriesForDate(dateStr) {
+    return entries.filter(e => e.date === dateStr);
+  }
+
+  function computeTotals(list) {
+    let cost = 0, revenue = 0;
+    for (const e of list) {
+      cost += e.cost || 0;
+      revenue += e.revenue || 0;
+    }
+    return { cost, revenue, net: revenue - cost };
+  }
+
+  function groupedByDate() {
+    const map = {};
+    for (const e of entries) {
+      if (!map[e.date]) map[e.date] = [];
+      map[e.date].push(e);
+    }
+    return Object.keys(map).sort((a, b) => b.localeCompare(a)).map(date => ({
+      date,
+      list: map[date],
+      totals: computeTotals(map[date])
+    }));
+  }
+
+  function renderDropdownOptions() {
+    return INGREDIENT_GROUPS.map(group => `
+      <optgroup label="── หมวด: ${escapeHtml(group.category)} ──">
+        ${group.items.map(item => {
+          const displayName = item.nameDisplay || item.name;
+          const priceAttr = item.defaultPrice ? `data-price="${item.defaultPrice}"` : '';
+          return `<option value="${escapeHtml(displayName)}" data-unit="${escapeHtml(item.unit)}" data-category="${escapeHtml(group.category)}" ${priceAttr}>${escapeHtml(displayName)} (หน่วย: ${escapeHtml(item.unit)})</option>`;
+        }).join('')}
+      </optgroup>
+    `).join('');
+  }
+
+  function render() {
+    const wrap = document.getElementById('ledger-wrap');
+    if (!loaded) return;
+
+    const todayList = entriesForDate(selectedDate);
+    const todayTotals = computeTotals(todayList);
+    const grand = computeTotals(entries);
+    const days = groupedByDate();
+    const isToday = selectedDate === todayStr();
+
+    wrap.innerHTML = `
+      <div class="app-header">
+        <div>
+          <h1>สมุดบันทึกรับ-จ่าย</h1>
+          <p>ร้านสุกี้โรล & น้ำจิ้ม</p>
+        </div>
+        <div class="top-btns">
+          <button type="button" class="btn-sub-action" id="export-json">💾 เซฟไฟล์</button>
+          <button type="button" class="btn-sub-action" id="import-json">📂 ดึงไฟล์</button>
+          <input type="file" id="import-file" accept="application/json,.json" style="display:none">
+        </div>
+      </div>
+
+      <div class="date-control-card">
+        <div class="date-text-display">
+          📅 ${fmtDateThai(selectedDate)}
+        </div>
+        <div class="date-nav-row">
+          <button class="btn-date-nav" id="prev-day">◄ วันก่อนหน้า</button>
+          <input type="date" class="date-picker-big" id="date-picker" value="${selectedDate}">
+          <button class="btn-date-nav" id="next-day">วันถัดไป ►</button>
+        </div>
+        ${!isToday ? '<button class="btn-today-pill" id="jump-today">กลับมาดู "วันนี้"</button>' : ''}
+      </div>
+
+      <div class="summary-box">
+        <div class="metric-card-big revenue">
+          <span class="metric-title">💰 ขายได้เงิน (รายรับ)</span>
+          <span class="metric-num">฿${money(todayTotals.revenue)}</span>
+        </div>
+        <div class="metric-card-big cost">
+          <span class="metric-title">🛒 ซื้อของไป (ทุน)</span>
+          <span class="metric-num">฿${money(todayTotals.cost)}</span>
+        </div>
+        <div class="metric-card-big ${todayTotals.net >= 0 ? 'profit-pos' : 'profit-neg'}">
+          <span class="metric-title">${todayTotals.net >= 0 ? '💵 เหลือเงิน (กำไร)' : '⚠️ ขาดทุน'}</span>
+          <span class="metric-num">${todayTotals.net >= 0 ? '+' : ''}฿${money(todayTotals.net)}</span>
+        </div>
+      </div>
+
+      <div class="section-title">📌 รายการบันทึกวันนี้ (${todayList.length} รายการ)</div>
+
+      <div class="records-container">
+        ${todayList.length === 0
+          ? '<div class="empty-box">ยังไม่มีรายการบันทึกของวันนี้<br>กรอกข้อมูลที่แบบฟอร์มด้านล่างได้เลยครับ</div>'
+          : todayList.map(e => recordCardHtml(e)).join('')}
+      </div>
+
+      <div class="add-card-elder">
+        <div class="section-title" style="margin-bottom:12px; text-align:center;">➕ เพิ่มรายการใหม่</div>
+        <form id="add-form">
+          <div class="form-field">
+            <label class="field-label" for="f-name">1. เลือกรายการ</label>
+            <select id="f-name">
+              <option value="" disabled selected>-- กดที่นี่เพื่อเลือกของ --</option>
+              ${renderDropdownOptions()}
+            </select>
+          </div>
+
+          <div class="form-2col">
+            <div class="form-field">
+              <label class="field-label" for="f-qty">2. จำนวน</label>
+              <input type="text" inputmode="decimal" id="f-qty" value="1">
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="f-unit">หน่วยนับ</label>
+              <input type="text" id="f-unit" placeholder="เช่น โล/ถุง/กล่อง">
+            </div>
+          </div>
+
+          <div class="auto-calc-box" id="auto-calc-box">
+            <div class="form-field" style="margin-bottom:0;">
+              <label class="field-label" for="f-unit-price" style="color:#92400E;">🏷️ ราคาขายกล่องละ (บาท)</label>
+              <input type="text" inputmode="decimal" id="f-unit-price" value="50" style="background:#FFF; font-weight:800; text-align:center; color:#92400E; font-size:22px;">
+              <span style="font-size:14px; color:#B45309; text-align:center; margin-top:4px;">✨ ใส่จำนวนกล่อง แล้วระบบจะคิดยอดเงินขายได้ให้อัตโนมัติ</span>
+            </div>
+          </div>
+
+          <div class="form-2col">
+            <div class="form-field">
+              <label class="field-label" for="f-cost">3. ซื้อมา (บาท)</label>
+              <input type="text" inputmode="decimal" id="f-cost" placeholder="0">
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="f-revenue">4. ขายได้ (บาท)</label>
+              <input type="text" inputmode="decimal" id="f-revenue" placeholder="0">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit-elder">✔ กดเพื่อบันทึกรายการ</button>
+          <div class="error-msg" id="form-err"></div>
+        </form>
+      </div>
+
+      <button class="history-accordion" id="overview-toggle">
+        <span>📖 ดูประวัติย้อนหลังทั้งหมด (${days.length} วัน)</span>
+        <span>${overviewOpen ? '▲' : '▼'}</span>
+      </button>
+
+      <div class="history-body ${overviewOpen ? 'open' : ''}">
+        <div class="grand-summary">
+          <div class="grand-row">
+            <span>ซื้อของรวมทั้งหมด:</span>
+            <span style="color:var(--orange-text)">฿${money(grand.cost)}</span>
+          </div>
+          <div class="grand-row">
+            <span>ขายได้รวมทั้งหมด:</span>
+            <span style="color:var(--green-text)">฿${money(grand.revenue)}</span>
+          </div>
+          <div class="grand-row" style="font-size:18px; margin-top:4px;">
+            <span>${grand.net >= 0 ? 'กำไรสะสมรวม:' : 'ขาดทุนสะสมรวม:'}</span>
+            <span style="color:${grand.net >= 0 ? 'var(--green-text)' : 'var(--red-text)'}">${grand.net >= 0 ? '+' : ''}฿${money(grand.net)}</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          ${days.length === 0 
+            ? '<div class="empty-box">ยังไม่มีประวัติการบันทึก</div>' 
+            : days.map(d => `
+              <div class="record-item" data-date="${d.date}" style="cursor:pointer;">
+                <div class="record-top">
+                  <span style="font-size:18px; font-weight:800;">📅 ${fmtDateThai(d.date)}</span>
+                  <span style="font-size:18px; font-weight:800; color:${d.totals.net >= 0 ? 'var(--green-text)' : 'var(--red-text)'}">
+                    ${d.totals.net >= 0 ? '+' : ''}฿${money(d.totals.net)}
+                  </span>
+                </div>
+                <div style="font-size:15px; color:var(--text-sub);">
+                  มี ${d.list.length} รายการ (ซื้อของไป ฿${money(d.totals.cost)})
+                </div>
+              </div>
+            `).join('')}
+        </div>
+      </div>
+    `;
+
+    attachEvents();
+  }
+
+  function recordCardHtml(e) {
+    const net = (e.revenue || 0) - (e.cost || 0);
+    const qtyText = (e.qty && e.qty > 0) ? `${e.qty} ${e.unit || ''}`.trim() : '';
+    
+    return `
+      <div class="record-item">
+        <div class="record-top">
+          <div style="display:flex; align-items:center; gap:8px;">
+            ${e.category ? `<span class="record-cat">${escapeHtml(e.category)}</span>` : ''}
+            <span class="record-name">${escapeHtml(e.name)}</span>
+          </div>
+          <span class="record-qty">${escapeHtml(qtyText)}</span>
+        </div>
+        <div class="record-details">
+          <div>ซื้อมา: <span class="record-num-bold" style="color:var(--orange-text)">฿${money(e.cost || 0)}</span></div>
+          <div>ขายได้: <span class="record-num-bold" style="color:var(--green-text)">฿${money(e.revenue || 0)}</span></div>
+          <div>กำไร: <span class="record-num-bold" style="color:${net >= 0 ? 'var(--green-text)' : 'var(--red-text)'}">${net >= 0 ? '+' : ''}฿${money(net)}</span></div>
+        </div>
+        <button class="btn-delete-big" data-id="${e.id}">🗑️ ลบรายการนี้</button>
+      </div>
+    `;
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function exportJson() {
+    const payload = { exportedAt: new Date().toISOString(), entries };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ledger-${todayStr()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleImportFile(file) {
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      try {
+        const parsed = JSON.parse(ev.target.result);
+        const incoming = Array.isArray(parsed) ? parsed : (parsed.entries || null);
+        if (!incoming) throw new Error('รูปแบบไฟล์ไม่ถูกต้อง');
+
+        const replace = confirm(`พบ ${incoming.length} รายการ\nกด "ตกลง" เพื่อแทนที่ข้อมูลเดิม หรือ "ยกเลิก" เพื่อรวมข้อมูลเข้าด้วยกัน`);
+        const formatted = incoming.map(e => ({
+          id: e.id || (Date.now() + '-' + Math.random().toString(36).slice(2, 7)),
+          date: e.date,
+          name: e.name,
+          category: e.category || '',
+          qty: e.qty !== undefined ? parseFloat(e.qty) : 1,
+          unit: e.unit || '',
+          cost: e.cost !== undefined ? e.cost : 0,
+          revenue: e.revenue !== undefined ? e.revenue : 0
+        }));
+
+        if (replace) {
+          entries = formatted;
+        } else {
+          const existingIds = new Set(entries.map(e => String(e.id)));
+          entries = entries.concat(formatted.filter(e => !existingIds.has(String(e.id))));
+        }
+        await saveEntries();
+        render();
+      } catch (err) {
+        alert('นำเข้าไม่สำเร็จ: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function attachEvents() {
+    const exportBtn = document.getElementById('export-json');
+    const importBtn = document.getElementById('import-json');
+    const importFile = document.getElementById('import-file');
+    if (exportBtn) exportBtn.onclick = exportJson;
+    if (importBtn) importBtn.onclick = () => importFile.click();
+    if (importFile) importFile.onchange = (ev) => {
+      if (ev.target.files[0]) handleImportFile(ev.target.files[0]);
+      importFile.value = '';
+    };
+
+    document.getElementById('prev-day')?.addEventListener('click', () => { selectedDate = addDays(selectedDate, -1); render(); });
+    document.getElementById('next-day')?.addEventListener('click', () => { selectedDate = addDays(selectedDate, 1); render(); });
+    document.getElementById('date-picker')?.addEventListener('change', (ev) => { selectedDate = ev.target.value; render(); });
+    document.getElementById('jump-today')?.addEventListener('click', () => { selectedDate = todayStr(); render(); });
+    document.getElementById('overview-toggle')?.addEventListener('click', () => { overviewOpen = !overviewOpen; render(); });
+
+    const nameSelect = document.getElementById('f-name');
+    const qtyInput = document.getElementById('f-qty');
+    const unitPriceInput = document.getElementById('f-unit-price');
+    const autoCalcBox = document.getElementById('auto-calc-box');
+    const costInput = document.getElementById('f-cost');
+    const revenueInput = document.getElementById('f-revenue');
+
+    function calculateAutoRevenue() {
+      const selectedOption = nameSelect?.options[nameSelect.selectedIndex];
+      if (!selectedOption) return;
+      
+      const defaultPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+      if (defaultPrice > 0) {
+        const qty = parseFloat(qtyInput.value) || 0;
+        const unitPrice = parseFloat(unitPriceInput.value) || 0;
+        revenueInput.value = qty * unitPrice;
+        costInput.value = 0;
+      }
+    }
+
+    if (nameSelect) {
+      nameSelect.onchange = () => {
+        const selectedOption = nameSelect.options[nameSelect.selectedIndex];
+        const defaultUnit = selectedOption.getAttribute('data-unit') || '';
+        const defaultPrice = selectedOption.getAttribute('data-price') || '';
+        
+        document.getElementById('f-unit').value = defaultUnit;
+        
+        if (defaultPrice) {
+          autoCalcBox.style.display = 'block';
+          unitPriceInput.value = defaultPrice;
+          calculateAutoRevenue();
+        } else {
+          autoCalcBox.style.display = 'none';
+        }
+      };
+    }
+
+    if (qtyInput) qtyInput.oninput = calculateAutoRevenue;
+    if (unitPriceInput) unitPriceInput.oninput = calculateAutoRevenue;
+
+    document.querySelectorAll('.btn-delete-big').forEach(btn => {
+      btn.onclick = async () => {
+        if (confirm('ต้องการลบรายการนี้ใช่ไหมครับ?')) {
+          entries = entries.filter(e => String(e.id) !== String(btn.dataset.id));
+          await saveEntries();
+          render();
+        }
+      };
+    });
+
+    document.querySelectorAll('.record-item[data-date]').forEach(row => {
+      row.onclick = () => {
+        selectedDate = row.dataset.date;
+        overviewOpen = false;
+        render();
+      };
+    });
+
+    const form = document.getElementById('add-form');
+    if (form) {
+      form.onsubmit = async (ev) => {
+        ev.preventDefault();
+        const sel = document.getElementById('f-name');
+        const selectedOpt = sel ? sel.options[sel.selectedIndex] : null;
+        
+        const name = sel ? sel.value : '';
+        const category = selectedOpt ? (selectedOpt.getAttribute('data-category') || '') : '';
+        const qty = parseFloat(document.getElementById('f-qty').value) || 1;
+        const unit = document.getElementById('f-unit').value.trim();
+        const cost = parseFloat(document.getElementById('f-cost').value) || 0;
+        const revenue = parseFloat(document.getElementById('f-revenue').value) || 0;
+        const errEl = document.getElementById('form-err');
+
+        if (!name) { errEl.textContent = '❌ กรุณากดเลือกรายการก่อนครับ'; return; }
+        if (cost === 0 && revenue === 0) { errEl.textContent = '❌ กรอกราคาที่ซื้อมา หรือ ราคาที่ขายได้ อย่างน้อย 1 ช่องครับ'; return; }
+
+        entries.push({
+          id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+          date: selectedDate,
+          name, category, qty, unit, cost, revenue
+        });
+        await saveEntries();
+        render();
+      };
+    }
+  }
+
+  loadEntries();
+})();
+</script>

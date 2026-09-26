@@ -2,44 +2,34 @@
 <html lang="th">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta name="theme-color" content="#7c3aed">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>สุกี้โรล Daily Tracker v3.1</title>
 
-    <!-- Tailwind -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link
         href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
-    <!-- Lucide -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- SheetJS -->
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
     <style>
-
         * {
-            box-sizing: border-box;
+            font-family: 'Prompt', sans-serif;
         }
 
         html {
@@ -47,2081 +37,773 @@
         }
 
         body {
-            margin: 0;
-            font-family: "Prompt", sans-serif;
-            background: #f8fafc;
-            color: #0f172a;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        button,
-        input,
-        select {
-            font-family: inherit;
-        }
-
-        button {
-            touch-action: manipulation;
-        }
-
-        input,
-        select {
-            font-size: 16px;
-        }
-
-
-        /* =====================================
-           HEADER
-        ===================================== */
-
-        .app-header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-
-            background: rgba(255,255,255,.94);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .header-inner {
-            max-width: 1280px;
-            min-height: 68px;
-
-            margin: auto;
-            padding: 10px 20px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 20px;
-        }
-
-
-        /* =====================================
-           LOGO
-        ===================================== */
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-        }
-
-        .brand-logo {
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 14px;
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #7c3aed,
-                    #a855f7
-                );
-
-            box-shadow:
-                0 8px 20px
-                rgba(124,58,237,.25);
-        }
-
-        .brand-title {
-            font-size: 18px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        .brand-subtitle {
-            margin-top: 2px;
-            font-size: 11px;
-            color: #64748b;
-        }
-
-
-        /* =====================================
-           NAVIGATION
-        ===================================== */
-
-        #mainNav {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .tab-btn {
-            border: 0;
-            background: transparent;
-
-            color: #64748b;
-
-            padding: 10px 15px;
-
-            border-radius: 12px;
-
-            font-size: 14px;
-            font-weight: 500;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            gap: 7px;
-
-            cursor: pointer;
-
-            transition: .2s;
-        }
-
-        .tab-btn:hover {
-            background: #f1f5f9;
-        }
-
-        .tab-btn.active {
-            color: #6d28d9;
-            background: #ede9fe;
-            font-weight: 600;
-        }
-
-
-        /* =====================================
-           MAIN
-        ===================================== */
-
-        .main-container {
-            width: 100%;
-            max-width: 1280px;
-
-            margin: auto;
-
-            padding: 20px;
-        }
-
-        .page-section {
-            display: none;
-        }
-
-        .page-section.active {
-            display: block;
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -.02em;
-        }
-
-        .page-description {
-            color: #64748b;
-            font-size: 13px;
-        }
-
-
-        /* =====================================
-           CARDS
-        ===================================== */
-
-        .card {
-            background: white;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 20px;
-
-            box-shadow:
-                0 3px 18px
-                rgba(15,23,42,.04);
-        }
-
-
-        /* =====================================
-           DATE
-        ===================================== */
-
-        .date-card {
-            padding: 15px;
-        }
-
-        .date-label {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-
-            color: #64748b;
-
-            font-size: 12px;
-
-            margin-bottom: 7px;
-        }
-
-        #recordDate {
-            width: 100%;
-
-            min-height: 46px;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 12px;
-
-            padding: 10px 12px;
-
-            outline: none;
-
             background: #f8fafc;
         }
 
-        #recordDate:focus {
-            border-color: #8b5cf6;
+        /* =========================================================
+           INPUT TABLE
+           Desktop = Table
+           Mobile = Card
+        ========================================================= */
 
-            box-shadow:
-                0 0 0 3px
-                rgba(139,92,246,.1);
-
-            background: white;
-        }
-
-
-        /* =====================================
-           SUMMARY
-        ===================================== */
-
-        .summary-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 12px;
-        }
-
-        .summary-card {
-            background: white;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 18px;
-
-            padding: 16px;
-
-            box-shadow:
-                0 3px 15px
-                rgba(15,23,42,.04);
-        }
-
-        .summary-icon {
-            width: 38px;
-            height: 38px;
-
-            border-radius: 12px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            margin-bottom: 10px;
-        }
-
-        .summary-label {
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .summary-value {
-            margin-top: 3px;
-
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        .summary-unit {
-            font-size: 11px;
-            color: #94a3b8;
-            font-weight: 400;
-        }
-
-
-        /* =====================================
-           SECTION
-        ===================================== */
-
-        .section-header {
-            padding: 16px 18px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 12px;
-
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .section-subtitle {
-            margin-top: 2px;
-
-            font-size: 11px;
-
-            color: #94a3b8;
-        }
-
-
-        /* =====================================
-           BUTTON
-        ===================================== */
-
-        .app-btn {
-            min-height: 42px;
-
-            border: 0;
-
-            padding: 9px 14px;
-
-            border-radius: 11px;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            gap: 7px;
-
-            font-size: 13px;
-            font-weight: 500;
-
-            cursor: pointer;
-
-            transition: .2s;
-        }
-
-        .app-btn:active {
-            transform: scale(.97);
-        }
-
-        .btn-primary {
-            color: white;
-            background: #7c3aed;
-        }
-
-        .btn-primary:hover {
-            background: #6d28d9;
-        }
-
-        .btn-secondary {
-            color: #475569;
-            background: #f1f5f9;
-        }
-
-        .btn-secondary:hover {
-            background: #e2e8f0;
-        }
-
-        .btn-success {
-            color: white;
-            background: #059669;
-        }
-
-        .btn-danger {
-            color: #dc2626;
-            background: #fee2e2;
-        }
-
-        .btn-blue {
-            color: #2563eb;
-            background: #eff6ff;
-        }
-
-
-        /* =====================================
-           TOOLBAR
-        ===================================== */
-
-        .entry-toolbar {
-            padding: 13px 18px;
-
-            display: flex;
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-
-        /* =====================================
-           TABLE
-        ===================================== */
-
-        .table-wrapper {
+        .items-table-wrapper {
             width: 100%;
             overflow-x: auto;
         }
 
-        .data-table {
+        .items-table {
             width: 100%;
-
-            border-collapse: collapse;
+            min-width: 720px;
         }
 
-        .data-table thead {
-            background: #f8fafc;
-        }
-
-        .data-table th {
-            padding: 12px 14px;
-
-            text-align: left;
-
-            color: #64748b;
-
-            font-size: 11px;
-            font-weight: 600;
-
-            white-space: nowrap;
-        }
-
-        .data-table td {
-            padding: 10px 14px;
-
-            border-top: 1px solid #f1f5f9;
-
-            vertical-align: middle;
-        }
-
-        .data-table select,
-        .data-table input {
-            width: 100%;
-
-            min-height: 42px;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 10px;
-
-            padding: 8px 10px;
-
-            outline: none;
-
-            background: white;
-        }
-
-        .data-table select:focus,
-        .data-table input:focus {
-            border-color: #8b5cf6;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(139,92,246,.1);
-        }
-
-
-        /* =====================================
-           DESKTOP SAVE
-        ===================================== */
-
-        .desktop-save {
-            padding: 15px 18px;
-
-            border-top: 1px solid #f1f5f9;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 12px;
-        }
-
-
-        /* =====================================
-           ANALYTICS
-        ===================================== */
-
-        .analytics-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 12px;
-        }
-
-        .analytics-card {
-            padding: 18px;
-
-            background: white;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 18px;
-        }
-
-        .analytics-number {
-            margin-top: 5px;
-
-            font-size: 26px;
-            font-weight: 700;
-        }
-
-
-        /* =====================================
-           CHART
-        ===================================== */
-
-        .chart-card {
-            padding: 16px;
-
-            background: white;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 20px;
-        }
-
-        .chart-title {
-            margin-bottom: 15px;
-
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .chart-container {
-            position: relative;
-
-            width: 100%;
-            height: 300px;
-        }
-
-
-        /* =====================================
-           SETTINGS
-        ===================================== */
-
-        .settings-grid {
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1fr)
-                360px;
-
-            gap: 16px;
-        }
-
-        .settings-card {
-            padding: 20px;
-
-            background: white;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 20px;
-        }
-
-        .settings-input {
-            width: 100%;
-
-            min-height: 46px;
-
-            border: 1px solid #e2e8f0;
-
-            border-radius: 12px;
-
-            padding: 10px 12px;
-
-            outline: none;
-        }
-
-        .settings-input:focus {
-            border-color: #8b5cf6;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(139,92,246,.1);
-        }
-
-        .settings-help {
-            margin-top: 7px;
-
-            color: #94a3b8;
-
-            font-size: 11px;
-
-            line-height: 1.7;
-        }
-
-        .settings-actions {
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            margin-top: 14px;
-        }
-
-
-        /* =====================================
-           SYNC STATUS
-        ===================================== */
-
-        #syncStatusBanner {
-            margin-bottom: 15px;
-        }
-
-
-        /* =====================================
-           MOBILE
-        ===================================== */
+        /* =========================================================
+           MOBILE CARD MODE
+        ========================================================= */
 
         @media (max-width: 767px) {
 
-            body {
-                padding-bottom: 10px;
+            .items-table-wrapper {
+                overflow: visible;
             }
 
-
-            /* Header */
-
-            .header-inner {
-                min-height: 62px;
-
-                padding: 9px 13px;
-            }
-
-            .brand-logo {
-                width: 38px;
-                height: 38px;
-
-                border-radius: 12px;
-            }
-
-            .brand-title {
-                font-size: 16px;
-            }
-
-            .brand-subtitle {
-                font-size: 10px;
-            }
-
-
-            /* Bottom Nav */
-
-            #mainNav {
-                position: fixed;
-
-                left: 0;
-                right: 0;
-                bottom: 0;
-
-                z-index: 100;
-
+            .items-table {
                 width: 100%;
-
-                padding:
-                    7px
-                    8px
-                    calc(7px + env(safe-area-inset-bottom));
-
-                background:
-                    rgba(255,255,255,.97);
-
-                backdrop-filter: blur(18px);
-
-                border-top:
-                    1px solid #e2e8f0;
-
-                display: grid;
-
-                grid-template-columns:
-                    repeat(3, 1fr);
-
-                gap: 4px;
-
-                box-shadow:
-                    0 -5px 25px
-                    rgba(15,23,42,.08);
+                min-width: 0 !important;
+                border-collapse: separate;
+                border-spacing: 0;
             }
 
-            .tab-btn {
-                min-height: 50px;
-
-                padding: 5px;
-
-                border-radius: 12px;
-
-                flex-direction: column;
-
-                gap: 3px;
-
-                font-size: 10px;
-            }
-
-            .tab-btn svg {
-                width: 20px;
-                height: 20px;
-            }
-
-
-            /* Main */
-
-            .main-container {
-                padding: 12px;
-            }
-
-            .page-title {
-                font-size: 21px;
-            }
-
-            .page-description {
-                font-size: 12px;
-            }
-
-
-            /* Date */
-
-            .date-card {
-                padding: 13px;
-
-                border-radius: 16px;
-            }
-
-
-            /* Summary */
-
-            .summary-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-                gap: 9px;
-            }
-
-            .summary-card {
-                padding: 13px;
-
-                border-radius: 16px;
-            }
-
-            .summary-icon {
-                width: 34px;
-                height: 34px;
-            }
-
-            .summary-value {
-                font-size: 19px;
-            }
-
-            .summary-label {
-                font-size: 10px;
-            }
-
-
-            /* Section */
-
-            .section-header {
-                padding: 13px;
-            }
-
-            .section-title {
-                font-size: 14px;
-            }
-
-            .section-subtitle {
-                font-size: 10px;
-            }
-
-
-            /* Toolbar */
-
-            .entry-toolbar {
-                padding: 10px 13px;
-
-                display: grid;
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .entry-toolbar .app-btn {
-                width: 100%;
-            }
-
-
-            /* =================================
-               INGREDIENT TABLE -> CARDS
-            ================================= */
-
-            .mobile-card-table {
-                display: block;
-            }
-
-            .mobile-card-table thead {
+            /* ซ่อนหัวตารางบนมือถือ */
+            .items-table thead {
                 display: none;
             }
 
-            .mobile-card-table tbody {
-                display: block;
-
-                padding: 10px;
-            }
-
-            .mobile-card-table tbody tr {
-                display: block;
+            /*
+             * แต่ละ tr กลายเป็น Card
+             */
+            .items-table tbody tr {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 46px;
 
                 width: 100%;
 
-                margin-bottom: 10px;
+                margin-bottom: 14px;
+                padding: 14px;
 
-                padding: 12px;
+                background: #ffffff;
 
-                border:
-                    1px solid #e2e8f0;
-
+                border: 1px solid #e2e8f0;
                 border-radius: 16px;
 
-                background: white;
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
 
-                box-shadow:
-                    0 3px 12px
-                    rgba(15,23,42,.04);
+                overflow: hidden;
             }
 
-            .mobile-card-table tbody td {
+            /*
+             * ทุก td กลายเป็น block
+             */
+            .items-table tbody td {
                 display: block;
 
-                width: 100%;
+                width: 100% !important;
 
-                padding:
-                    5px 0 !important;
+                padding: 0 !important;
 
                 border: 0 !important;
             }
 
-            .mobile-card-table tbody td::before {
+            /* =====================================================
+               รายการ
+            ===================================================== */
+
+            .items-table tbody td:nth-child(1) {
+                grid-column: 1 / 2;
+
+                padding-right: 10px !important;
+            }
+
+            .items-table tbody td:nth-child(1)::before {
+                content: "รายการ";
+
                 display: block;
 
-                margin-bottom: 4px;
+                margin-bottom: 6px;
 
-                color: #94a3b8;
+                font-size: 11px;
+                font-weight: 600;
 
-                font-size: 10px;
-
-                font-weight: 500;
+                color: #64748b;
             }
 
-            .mobile-card-table tbody td:nth-child(1)::before {
-                content: "รายการ";
+            .items-table tbody td:nth-child(1) select {
+                width: 100% !important;
+
+                min-height: 46px;
+
+                padding: 0 12px;
+
+                background: #f8fafc;
+
+                border: 1px solid #cbd5e1;
+                border-radius: 10px;
+
+                font-size: 14px;
+                color: #334155;
             }
 
-            .mobile-card-table tbody td:nth-child(2)::before {
-                content: "จำนวน";
+            /* =====================================================
+               ปุ่มลบ
+            ===================================================== */
+
+            .items-table tbody td:nth-child(4) {
+                grid-column: 2 / 3;
+
+                width: 46px !important;
+
+                display: flex;
+
+                align-items: flex-end;
+                justify-content: flex-end;
+
+                padding-bottom: 0 !important;
             }
 
-            .mobile-card-table tbody td:nth-child(3)::before {
-                content: "ราคารวม / ยอดขาย";
-            }
+            .items-table tbody td:nth-child(4) button {
+                width: 44px !important;
+                min-width: 44px !important;
 
-            .mobile-card-table tbody td:nth-child(4) {
-                padding-top: 8px !important;
-
-                text-align: right;
-            }
-
-            .mobile-card-table select,
-            .mobile-card-table input {
+                height: 44px !important;
                 min-height: 44px !important;
 
-                font-size: 16px !important;
-            }
-
-
-            /* ขายได้ */
-
-            .mobile-card-table tbody tr.bg-emerald-50\/40 {
-                border:
-                    2px solid #10b981;
-
-                background: #ecfdf5;
-            }
-
-
-            /* Desktop save hidden */
-
-            .desktop-save {
-                display: none;
-            }
-
-
-            /* =================================
-               HISTORY CARDS
-            ================================= */
-
-            .history-table thead {
-                display: none;
-            }
-
-            .history-table,
-            .history-table tbody {
-                display: block;
-
-                width: 100%;
-            }
-
-            .history-table tbody {
-                padding: 10px;
-            }
-
-            .history-table tbody tr {
-                display: block;
-
-                margin-bottom: 10px;
-
-                padding: 12px;
-
-                border:
-                    1px solid #e2e8f0;
-
-                border-radius: 16px;
-
-                background: white;
-            }
-
-            .history-table tbody td {
                 display: flex;
 
                 align-items: center;
+                justify-content: center;
 
-                justify-content: space-between;
+                border-radius: 10px;
 
-                gap: 10px;
-
-                padding: 6px 0 !important;
-
-                border: 0 !important;
-
-                font-size: 12px;
+                touch-action: manipulation;
             }
 
-            .history-table tbody td::before {
-                flex-shrink: 0;
+            /* =====================================================
+               จำนวน
+            ===================================================== */
 
-                color: #94a3b8;
+            .items-table tbody td:nth-child(2) {
+                grid-column: 1 / 3;
 
-                font-size: 10px;
+                margin-top: 14px;
             }
 
-            .history-table tbody td:nth-child(1)::before {
-                content: "วันที่";
+            .items-table tbody td:nth-child(2)::before {
+                content: "จำนวน";
+
+                display: block;
+
+                margin-bottom: 6px;
+
+                font-size: 11px;
+                font-weight: 600;
+
+                color: #64748b;
             }
 
-            .history-table tbody td:nth-child(2)::before {
-                content: "ขายได้";
-            }
+            .items-table tbody td:nth-child(2) input {
+                width: 100% !important;
 
-            .history-table tbody td:nth-child(3)::before {
-                content: "ยอดขาย";
-            }
+                min-height: 46px;
 
-            .history-table tbody td:nth-child(4)::before {
-                content: "ค่าใช้จ่าย";
-            }
+                padding: 0 12px;
 
-            .history-table tbody td:nth-child(5)::before {
-                content: "กำไร";
-            }
+                background: #ffffff;
 
-            .history-table tbody td:nth-child(6)::before {
-                content: "";
-            }
+                border: 1px solid #cbd5e1;
+                border-radius: 10px;
 
-
-            /* =================================
-               ANALYTICS
-            ================================= */
-
-            .analytics-grid {
-                grid-template-columns: 1fr;
-
-                gap: 9px;
-            }
-
-            .analytics-card {
-                padding: 14px;
-
-                border-radius: 16px;
-            }
-
-            .analytics-number {
-                font-size: 23px;
-            }
-
-
-            /* Charts */
-
-            .chart-card {
-                padding: 13px;
-
-                border-radius: 17px;
-            }
-
-            .chart-title {
-                font-size: 14px;
-            }
-
-            .chart-container {
-                height: 240px;
-            }
-
-
-            /* =================================
-               SETTINGS
-            ================================= */
-
-            .settings-grid {
-                grid-template-columns: 1fr;
-
-                gap: 10px;
-            }
-
-            .settings-card {
-                padding: 15px;
-
-                border-radius: 17px;
-            }
-
-            .settings-actions {
-                display: grid;
-
-                grid-template-columns: 1fr;
-            }
-
-            .settings-actions .app-btn {
-                width: 100%;
-            }
-
-
-            /* Footer */
-
-            footer {
-                display: none;
-            }
-
-        }
-
-
-        /* =====================================
-           SMALL MOBILE
-        ===================================== */
-
-        @media (max-width: 380px) {
-
-            .main-container {
-                padding: 9px;
-            }
-
-            .brand-title {
                 font-size: 15px;
             }
 
-            .brand-subtitle {
-                display: none;
+            /* =====================================================
+               ราคา
+            ===================================================== */
+
+            .items-table tbody td:nth-child(3) {
+                grid-column: 1 / 3;
+
+                margin-top: 12px;
             }
 
-            .summary-card {
-                padding: 11px;
+            .items-table tbody td:nth-child(3)::before {
+                content: "ราคารวม / ยอดขาย";
+
+                display: block;
+
+                margin-bottom: 6px;
+
+                font-size: 11px;
+                font-weight: 600;
+
+                color: #64748b;
             }
 
-            .summary-value {
-                font-size: 17px;
+            .items-table tbody td:nth-child(3) input {
+                width: 100% !important;
+
+                min-height: 46px;
+
+                padding: 0 12px;
+
+                background: #ffffff;
+
+                border: 1px solid #cbd5e1;
+                border-radius: 10px;
+
+                font-size: 15px;
+                font-weight: 600;
             }
 
+            /* =====================================================
+               Focus
+            ===================================================== */
+
+            .items-table tbody input:focus,
+            .items-table tbody select:focus {
+                outline: none;
+
+                border-color: #94a3b8;
+
+                box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.15);
+            }
+
+            /* =====================================================
+               Card สำหรับ "ขายได้"
+            ===================================================== */
+
+            .items-table tbody tr.bg-emerald-50\/40 {
+                background: rgba(236, 253, 245, 0.75);
+
+                border-color: #a7f3d0;
+            }
         }
 
-    </style>
+        /* =========================================================
+           VERY SMALL MOBILE
+        ========================================================= */
 
+        @media (max-width: 380px) {
+
+            .items-table tbody tr {
+                padding: 12px;
+
+                border-radius: 14px;
+            }
+
+            .items-table tbody input,
+            .items-table tbody select {
+                min-height: 44px;
+
+                font-size: 14px;
+            }
+
+            .items-table tbody td:nth-child(4) button {
+                width: 42px !important;
+                min-width: 42px !important;
+
+                height: 42px !important;
+                min-height: 42px !important;
+            }
+        }
+
+        /* =========================================================
+           CARD EFFECT
+        ========================================================= */
+
+        .summary-card {
+            transition: all 0.2s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =========================================================
+           SCROLLBAR
+        ========================================================= */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* =========================================================
+           MOBILE BUTTON
+        ========================================================= */
+
+        @media (max-width: 767px) {
+
+            button {
+                touch-action: manipulation;
+            }
+
+            input,
+            select {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 
 
-<body>
+<body class="min-h-screen text-slate-700">
 
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
 
-<!-- =========================================
-     HEADER
-========================================= -->
+    <header class="sticky top-0 z-50 bg-white border-b border-slate-200">
 
-<header class="app-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <div class="header-inner">
+            <div class="h-16 flex items-center justify-between">
 
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
 
-        <!-- BRAND -->
-
-        <div class="brand">
-
-            <div class="brand-logo">
-
-                <i
-                    data-lucide="utensils-crossed"
-                    width="21"
-                ></i>
-
-            </div>
-
-            <div>
-
-                <div class="brand-title">
-                    สุกี้โรล Daily Tracker
-                </div>
-
-                <div class="brand-subtitle">
-                    บันทึกยอดขายและค่าใช้จ่าย
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- NAV -->
-
-        <nav id="mainNav">
-
-            <button
-                id="tab-entry"
-                class="tab-btn active"
-                onclick="switchTab('entry')"
-            >
-
-                <i
-                    data-lucide="clipboard-pen-line"
-                ></i>
-
-                <span>
-                    บันทึก
-                </span>
-
-            </button>
-
-
-            <button
-                id="tab-analytics"
-                class="tab-btn"
-                onclick="switchTab('analytics')"
-            >
-
-                <i
-                    data-lucide="chart-no-axes-combined"
-                ></i>
-
-                <span>
-                    วิเคราะห์
-                </span>
-
-            </button>
-
-
-            <button
-                id="tab-settings"
-                class="tab-btn"
-                onclick="switchTab('settings')"
-            >
-
-                <i
-                    data-lucide="settings"
-                ></i>
-
-                <span>
-                    ตั้งค่า
-                </span>
-
-            </button>
-
-        </nav>
-
-    </div>
-
-</header>
-
-
-
-<!-- =========================================
-     MAIN
-========================================= -->
-
-<main class="main-container">
-
-
-    <!-- SYNC STATUS -->
-
-    <div id="syncStatusBanner"></div>
-
-
-
-    <!-- =====================================
-         ENTRY
-    ====================================== -->
-
-    <section
-        id="entry-section"
-        class="page-section active"
-    >
-
-
-        <!-- PAGE TITLE -->
-
-        <div class="mb-4">
-
-            <h1 class="page-title">
-                บันทึกวันนี้
-            </h1>
-
-            <p class="page-description">
-                บันทึกยอดขายและค่าใช้จ่ายประจำวัน
-            </p>
-
-        </div>
-
-
-
-        <!-- DATE -->
-
-        <div class="card date-card mb-3">
-
-            <div class="date-label">
-
-                <i
-                    data-lucide="calendar-days"
-                    width="15"
-                ></i>
-
-                วันที่บันทึก
-
-            </div>
-
-
-            <input
-                type="date"
-                id="recordDate"
-            >
-
-        </div>
-
-
-
-        <!-- =================================
-             SUMMARY
-        ================================== -->
-
-        <div class="summary-grid mb-3">
-
-
-            <!-- Revenue -->
-
-            <div class="summary-card">
-
-                <div
-                    class="summary-icon"
-                    style="
-                        background:#ecfdf5;
-                        color:#059669;
-                    "
-                >
-
-                    <i
-                        data-lucide="banknote"
-                    ></i>
-
-                </div>
-
-                <div class="summary-label">
-                    ยอดขาย
-                </div>
-
-                <div class="summary-value">
-
-                    <span id="totalRevenue">
-                        0.00
-                    </span>
-
-                    <span class="summary-unit">
-                        บาท
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- Boxes -->
-
-            <div class="summary-card">
-
-                <div
-                    class="summary-icon"
-                    style="
-                        background:#eff6ff;
-                        color:#2563eb;
-                    "
-                >
-
-                    <i
-                        data-lucide="package"
-                    ></i>
-
-                </div>
-
-                <div class="summary-label">
-                    จำนวนที่ขาย
-                </div>
-
-                <div class="summary-value">
-
-                    <span id="boxesSoldText">
-                        0
-                    </span>
-
-                    <span class="summary-unit">
-                        กล่อง
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- Expense -->
-
-            <div class="summary-card">
-
-                <div
-                    class="summary-icon"
-                    style="
-                        background:#fff7ed;
-                        color:#ea580c;
-                    "
-                >
-
-                    <i
-                        data-lucide="shopping-cart"
-                    ></i>
-
-                </div>
-
-                <div class="summary-label">
-                    ค่าใช้จ่าย
-                </div>
-
-                <div class="summary-value">
-
-                    <span id="totalExpense">
-                        0.00
-                    </span>
-
-                    <span class="summary-unit">
-                        บาท
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- Profit -->
-
-            <div class="summary-card">
-
-                <div
-                    class="summary-icon"
-                    style="
-                        background:#f5f3ff;
-                        color:#7c3aed;
-                    "
-                >
-
-                    <i
-                        data-lucide="trending-up"
-                    ></i>
-
-                </div>
-
-                <div class="summary-label">
-                    กำไรสุทธิ
-                </div>
-
-                <div class="summary-value">
-
-                    <span id="netProfit">
-                        0.00
-                    </span>
-
-                    <span class="summary-unit">
-                        บาท
-                    </span>
-
-                </div>
-
-                <div
-                    id="profitMarginText"
-                    class="text-[10px] text-slate-400 mt-1"
-                >
-                    Margin 0%
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================
-             ITEMS
-        ================================== -->
-
-        <div class="card mb-4">
-
-
-            <!-- HEADER -->
-
-            <div class="section-header">
-
-                <div>
-
-                    <div class="section-title">
-                        รายการวันนี้
+                    <div
+                        class="w-10 h-10 rounded-xl bg-emerald-500 flex items-center justify-center"
+                    >
+                        <i
+                            data-lucide="utensils"
+                            class="w-5 h-5 text-white"
+                        ></i>
                     </div>
 
-                    <div class="section-subtitle">
-                        รายการซื้อของและยอดขาย
+                    <div>
+                        <h1 class="font-bold text-slate-800 leading-tight">
+                            สุกี้โรล
+                        </h1>
+
+                        <p class="text-[10px] sm:text-xs text-slate-400">
+                            Daily Tracker
+                        </p>
                     </div>
 
                 </div>
 
 
-                <button
-                    class="app-btn btn-primary"
-                    onclick="addRowAndFocus()"
-                >
+                <!-- Navigation -->
+                <nav class="flex items-center gap-1 sm:gap-2">
 
-                    <i
-                        data-lucide="plus"
-                        width="16"
-                    ></i>
-
-                    เพิ่มรายการ
-
-                </button>
-
-            </div>
-
-
-
-            <!-- TOOLBAR -->
-
-            <div class="entry-toolbar">
-
-
-                <button
-                    class="app-btn btn-secondary"
-                    onclick="addRowAndFocus()"
-                >
-
-                    <i
-                        data-lucide="plus-circle"
-                        width="16"
-                    ></i>
-
-                    เพิ่มรายการ
-
-                </button>
-
-
-                <button
-                    class="app-btn btn-danger"
-                    onclick="clearAllRows()"
-                >
-
-                    <i
-                        data-lucide="trash-2"
-                        width="16"
-                    ></i>
-
-                    ล้างรายการ
-
-                </button>
-
-
-                <button
-                    class="app-btn btn-blue"
-                    onclick="exportToExcel()"
-                >
-
-                    <i
-                        data-lucide="file-spreadsheet"
-                        width="16"
-                    ></i>
-
-                    Excel
-
-                </button>
-
-
-                <button
-                    class="app-btn btn-secondary"
-                    onclick="syncAllToGoogleSheets()"
-                >
-
-                    <i
-                        data-lucide="cloud-upload"
-                        width="16"
-                    ></i>
-
-                    Sync
-
-                </button>
-
-            </div>
-
-
-
-            <!-- TABLE -->
-
-            <div class="table-wrapper">
-
-                <table class="data-table mobile-card-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th style="width:40%">
-                                รายการ
-                            </th>
-
-                            <th style="width:18%">
-                                จำนวน
-                            </th>
-
-                            <th style="width:30%">
-                                ราคารวม
-                            </th>
-
-                            <th style="width:12%">
-                                จัดการ
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="itemsTableBody">
-
-                        <!-- script.js สร้างรายการ -->
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-
-            <!-- DESKTOP SAVE -->
-
-            <div class="desktop-save">
-
-                <div>
-
-                    <div class="text-xs text-slate-500">
-                        ตรวจสอบข้อมูลก่อนบันทึก
-                    </div>
-
-                    <div class="text-sm font-semibold mt-1">
-
-                        กำไรสุทธิ:
-
-                        <span
-                            id="desktopProfitDisplay"
-                            class="text-emerald-600"
-                        >
-                            0.00 บาท
+                    <button
+                        id="tab-entry"
+                        onclick="switchTab('entry')"
+                        class="px-3 sm:px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-800 transition"
+                    >
+                        <span class="hidden sm:inline">บันทึกยอด</span>
+                        <span class="sm:hidden">
+                            <i data-lucide="clipboard-pen" class="w-5 h-5"></i>
                         </span>
+                    </button>
+
+                    <button
+                        id="tab-analytics"
+                        onclick="switchTab('analytics')"
+                        class="px-3 sm:px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:bg-slate-100 transition"
+                    >
+                        <span class="hidden sm:inline">วิเคราะห์</span>
+                        <span class="sm:hidden">
+                            <i data-lucide="chart-no-axes-combined" class="w-5 h-5"></i>
+                        </span>
+                    </button>
+
+                    <button
+                        id="tab-settings"
+                        onclick="switchTab('settings')"
+                        class="px-3 sm:px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:bg-slate-100 transition"
+                    >
+                        <span class="hidden sm:inline">ตั้งค่า</span>
+                        <span class="sm:hidden">
+                            <i data-lucide="settings" class="w-5 h-5"></i>
+                        </span>
+                    </button>
+
+                </nav>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+
+        <!-- =====================================================
+             ENTRY SECTION
+        ===================================================== -->
+
+        <section id="section-entry">
+
+            <!-- Page Header -->
+            <div class="mb-6">
+
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+
+                    <div>
+
+                        <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">
+                            บันทึกยอดขาย
+                        </h2>
+
+                        <p class="mt-1 text-sm text-slate-500">
+                            บันทึกรายการซื้อของและยอดขายประจำวัน
+                        </p>
 
                     </div>
 
-                </div>
-
-
-                <button
-                    class="app-btn btn-primary"
-                    onclick="saveDailyData()"
-                >
-
-                    <i
-                        data-lucide="save"
-                        width="17"
-                    ></i>
-
-                    บันทึกข้อมูล
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================
-             HISTORY
-        ================================== -->
-
-        <div class="card">
-
-
-            <div class="section-header">
-
-                <div>
-
-                    <div class="section-title">
-                        ประวัติการบันทึก
-                    </div>
-
-                    <div class="section-subtitle">
-                        ดูข้อมูลยอดขายย้อนหลัง
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="app-btn btn-blue"
-                    onclick="syncAllToGoogleSheets()"
-                >
-
-                    <i
-                        data-lucide="refresh-cw"
-                        width="15"
-                    ></i>
-
-                    Sync
-
-                </button>
-
-            </div>
-
-
-
-            <div class="table-wrapper">
-
-                <table
-                    class="data-table history-table"
-                >
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                วันที่
-                            </th>
-
-                            <th>
-                                ขายได้
-                            </th>
-
-                            <th>
-                                ยอดขาย
-                            </th>
-
-                            <th>
-                                ค่าใช้จ่าย
-                            </th>
-
-                            <th>
-                                กำไร
-                            </th>
-
-                            <th>
-                                จัดการ
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="historyTableBody">
-
-                        <!-- script.js -->
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         ANALYTICS
-    ====================================== -->
-
-    <section
-        id="analytics-section"
-        class="page-section"
-    >
-
-
-        <div class="mb-4">
-
-            <h1 class="page-title">
-                วิเคราะห์ยอดขาย
-            </h1>
-
-            <p class="page-description">
-                ดูภาพรวมยอดขาย ค่าใช้จ่าย และกำไร
-            </p>
-
-        </div>
-
-
-
-        <!-- ANALYTICS SUMMARY -->
-
-        <div class="analytics-grid mb-4">
-
-
-            <div class="analytics-card">
-
-                <div class="text-xs text-slate-500">
-                    ยอดขายเฉลี่ย
-                </div>
-
-                <div class="analytics-number">
-
-                    <span id="avgBoxes">
-                        0
-                    </span>
-
-                    <span
-                        class="text-sm font-normal text-slate-400"
+                    <button
+                        onclick="loadLastTemplate()"
+                        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition"
                     >
-                        กล่อง/วัน
-                    </span>
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        ใช้รายการจากวันก่อน
+                    </button>
 
                 </div>
 
             </div>
 
 
-            <div class="analytics-card">
+            <!-- =================================================
+                 DATE
+            ================================================= -->
 
-                <div class="text-xs text-slate-500">
-                    ยอดขายสะสม
-                </div>
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 mb-5">
 
-                <div class="analytics-number">
-
-                    <span id="accRevenue">
-                        0.00
-                    </span>
-
-                    <span
-                        class="text-sm font-normal text-slate-400"
-                    >
-                        บาท
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="analytics-card">
-
-                <div class="text-xs text-slate-500">
-                    สัดส่วนค่าใช้จ่าย
-                </div>
-
-                <div class="analytics-number">
-
-                    <span id="expenseRatio">
-                        0
-                    </span>
-
-                    <span
-                        class="text-sm font-normal text-slate-400"
-                    >
-                        %
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================
-             FINANCIAL CHART
-        ================================== -->
-
-        <div class="chart-card mb-4">
-
-            <div class="chart-title">
-
-                <div class="flex items-center gap-2">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3">
 
                     <div
-                        class="
-                            w-8 h-8
-                            rounded-lg
-                            bg-emerald-50
-                            text-emerald-600
-                            flex
-                            items-center
-                            justify-center
-                        "
+                        class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center shrink-0"
                     >
-
                         <i
-                            data-lucide="chart-line"
-                            width="17"
+                            data-lucide="calendar-days"
+                            class="w-5 h-5 text-slate-500"
                         ></i>
-
                     </div>
 
-                    <span>
-                        ยอดขาย / ค่าใช้จ่าย / กำไร
-                    </span>
+                    <div class="flex-1">
+
+                        <label
+                            for="recordDate"
+                            class="block text-xs font-medium text-slate-500 mb-1"
+                        >
+                            วันที่บันทึก
+                        </label>
+
+                        <input
+                            type="date"
+                            id="recordDate"
+                            class="w-full sm:w-auto px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-200"
+                        >
+
+                    </div>
 
                 </div>
 
             </div>
 
 
-            <div class="chart-container">
+            <!-- =================================================
+                 SUMMARY CARDS
+            ================================================= -->
 
-                <canvas
-                    id="financialTrendChart"
-                ></canvas>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
 
-            </div>
+                <!-- Revenue -->
+                <div
+                    class="summary-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5"
+                >
 
-        </div>
+                    <div class="flex items-center justify-between mb-3">
 
-
-
-        <!-- =================================
-             BOXES CHART
-        ================================== -->
-
-        <div class="chart-card">
-
-            <div class="chart-title">
-
-                <div class="flex items-center gap-2">
-
-                    <div
-                        class="
-                            w-8 h-8
-                            rounded-lg
-                            bg-blue-50
-                            text-blue-600
-                            flex
-                            items-center
-                            justify-center
-                        "
-                    >
-
-                        <i
-                            data-lucide="bar-chart-3"
-                            width="17"
-                        ></i>
+                        <div
+                            class="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center"
+                        >
+                            <i
+                                data-lucide="banknote"
+                                class="w-5 h-5 text-emerald-600"
+                            ></i>
+                        </div>
 
                     </div>
 
-                    <span>
+                    <p class="text-xs sm:text-sm text-slate-500">
+                        ยอดขาย
+                    </p>
+
+                    <p
+                        id="totalRevenue"
+                        class="mt-1 text-xl sm:text-2xl font-bold text-slate-800"
+                    >
+                        ฿0.00
+                    </p>
+
+                </div>
+
+
+                <!-- Boxes -->
+                <div
+                    class="summary-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5"
+                >
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div
+                            class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center"
+                        >
+                            <i
+                                data-lucide="package"
+                                class="w-5 h-5 text-blue-600"
+                            ></i>
+                        </div>
+
+                    </div>
+
+                    <p class="text-xs sm:text-sm text-slate-500">
                         จำนวนกล่องที่ขาย
-                    </span>
+                    </p>
+
+                    <p
+                        id="boxesSoldText"
+                        class="mt-1 text-xl sm:text-2xl font-bold text-slate-800"
+                    >
+                        0 กล่อง
+                    </p>
+
+                </div>
+
+
+                <!-- Expense -->
+                <div
+                    class="summary-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5"
+                >
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div
+                            class="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center"
+                        >
+                            <i
+                                data-lucide="shopping-cart"
+                                class="w-5 h-5 text-orange-600"
+                            ></i>
+                        </div>
+
+                    </div>
+
+                    <p class="text-xs sm:text-sm text-slate-500">
+                        ค่าใช้จ่ายวันนี้
+                    </p>
+
+                    <p
+                        id="totalExpense"
+                        class="mt-1 text-xl sm:text-2xl font-bold text-slate-800"
+                    >
+                        ฿0.00
+                    </p>
+
+                </div>
+
+
+                <!-- Profit -->
+                <div
+                    class="summary-card bg-white rounded-2xl border border-slate-200 p-4 sm:p-5"
+                >
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div
+                            class="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center"
+                        >
+                            <i
+                                data-lucide="trending-up"
+                                class="w-5 h-5 text-purple-600"
+                            ></i>
+                        </div>
+
+                    </div>
+
+                    <p class="text-xs sm:text-sm text-slate-500">
+                        กำไรสุทธิ
+                    </p>
+
+                    <p
+                        id="netProfit"
+                        class="mt-1 text-xl sm:text-2xl font-bold text-slate-800"
+                    >
+                        ฿0.00
+                    </p>
+
+                    <p
+                        id="profitMarginText"
+                        class="mt-1 text-xs text-slate-400"
+                    >
+                        Margin 0%
+                    </p>
 
                 </div>
 
             </div>
 
 
-            <div class="chart-container">
+            <!-- =================================================
+                 INPUT AREA
+            ================================================= -->
 
-                <canvas
-                    id="boxesSoldChart"
-                ></canvas>
+            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
 
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================
-         SETTINGS
-    ====================================== -->
-
-    <section
-        id="settings-section"
-        class="page-section"
-    >
-
-
-        <div class="mb-4">
-
-            <h1 class="page-title">
-                ตั้งค่า
-            </h1>
-
-            <p class="page-description">
-                ตั้งค่าระบบและการเชื่อมต่อ Google Sheets
-            </p>
-
-        </div>
-
-
-
-        <div class="settings-grid">
-
-
-            <!-- =================================
-                 GOOGLE SHEETS
-            ================================== -->
-
-            <div class="settings-card">
-
-
-                <div class="flex items-center gap-3 mb-5">
-
-                    <div
-                        class="
-                            w-11 h-11
-                            rounded-xl
-                            bg-emerald-50
-                            text-emerald-600
-                            flex
-                            items-center
-                            justify-center
-                        "
-                    >
-
-                        <i
-                            data-lucide="table-2"
-                            width="21"
-                        ></i>
-
-                    </div>
-
+                <!-- Header -->
+                <div
+                    class="px-4 sm:px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                >
 
                     <div>
 
-                        <div class="font-semibold">
-                            Google Sheets
-                        </div>
+                        <h3 class="font-semibold text-slate-800">
+                            รายการประจำวัน
+                        </h3>
 
-                        <div class="text-xs text-slate-400">
-                            เชื่อมต่อข้อมูลยอดขาย
-                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            บันทึกวัตถุดิบ ค่าใช้จ่าย และยอดขาย
+                        </p>
+
+                    </div>
+
+                    <div class="flex items-center gap-2">
+
+                        <button
+                            onclick="addRowAndFocus()"
+                            class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition"
+                        >
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            เพิ่มรายการ
+                        </button>
+
+                        <button
+                            onclick="clearAllRows()"
+                            class="inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 transition"
+                            title="ล้างรายการ"
+                        >
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
 
                     </div>
 
                 </div>
 
 
+                <!-- =================================================
+                     TABLE / MOBILE CARD
+                ================================================= -->
 
-                <label
-                    for="gasUrlInput"
-                    class="
-                        block
-                        text-sm
-                        font-medium
-                        text-slate-700
-                        mb-2
-                    "
-                >
-                    Google Apps Script Web App URL
-                </label>
+                <div class="p-3 sm:p-0">
+
+                    <!-- Mobile hint -->
+                    <div
+                        class="flex items-center gap-2 px-1 py-2 md:hidden"
+                    >
+
+                        <div
+                            class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0"
+                        >
+                            <i
+                                data-lucide="smartphone"
+                                class="w-4 h-4 text-slate-500"
+                            ></i>
+                        </div>
+
+                        <p class="text-xs text-slate-500">
+                            แต่ละรายการจะแสดงเป็น Card เพื่อให้กรอกข้อมูลบนมือถือได้ง่าย
+                        </p>
+
+                    </div>
 
 
-                <input
-                    type="url"
-                    id="gasUrlInput"
-                    class="settings-input"
-                    placeholder="https://script.google.com/macros/s/..."
-                    autocomplete="off"
-                >
+                    <div class="items-table-wrapper">
 
+                        <table class="items-table">
 
-                <div class="settings-help">
+                            <thead class="bg-slate-50 border-b border-slate-200">
 
-                    ใส่ URL ของ Google Apps Script
-                    ที่ใช้เชื่อมต่อกับ Google Sheets
+                                <tr>
 
-                    <br>
+                                    <th
+                                        class="text-left py-3 px-3 sm:px-6 text-xs font-semibold text-slate-500 w-[40%]"
+                                    >
+                                        รายการ
+                                    </th>
 
-                    หลังจากเปลี่ยน URL
-                    ให้กด "บันทึก URL"
+                                    <th
+                                        class="text-left py-3 px-3 text-xs font-semibold text-slate-500 w-[20%]"
+                                    >
+                                        จำนวน
+                                    </th>
+
+                                    <th
+                                        class="text-left py-3 px-3 text-xs font-semibold text-slate-500 w-[30%]"
+                                    >
+                                        ราคารวม / ยอดขาย
+                                    </th>
+
+                                    <th
+                                        class="text-center py-3 px-3 text-xs font-semibold text-slate-500 w-[10%]"
+                                    >
+                                        ลบ
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="itemsTableBody"></tbody>
+
+                        </table>
+
+                    </div>
 
                 </div>
 
 
-
-                <div class="settings-actions">
-
-
-                    <button
-                        class="app-btn btn-primary"
-                        onclick="saveGasUrl()"
-                    >
-
-                        <i
-                            data-lucide="save"
-                            width="16"
-                        ></i>
-
-                        บันทึก URL
-
-                    </button>
-
+                <!-- Bottom Action -->
+                <div
+                    class="px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50/50"
+                >
 
                     <button
-                        class="app-btn btn-secondary"
-                        onclick="testGasConnection()"
+                        onclick="saveDailyData()"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition shadow-sm"
                     >
-
-                        <i
-                            data-lucide="wifi"
-                            width="16"
-                        ></i>
-
-                        ทดสอบการเชื่อมต่อ
-
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        บันทึกข้อมูลวันนี้
                     </button>
 
                 </div>
@@ -2129,609 +811,513 @@
             </div>
 
 
+            <!-- =================================================
+                 HISTORY
+            ================================================= -->
 
-            <!-- =================================
-                 DATA MANAGEMENT
-            ================================== -->
+            <div class="mt-6 bg-white rounded-2xl border border-slate-200 overflow-hidden">
 
-            <div class="settings-card">
+                <div class="px-4 sm:px-6 py-4 border-b border-slate-200">
+
+                    <div class="flex items-center gap-3">
+
+                        <div
+                            class="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center"
+                        >
+                            <i
+                                data-lucide="history"
+                                class="w-5 h-5 text-slate-500"
+                            ></i>
+                        </div>
+
+                        <div>
+
+                            <h3 class="font-semibold text-slate-800">
+                                ประวัติการบันทึก
+                            </h3>
+
+                            <p class="text-xs text-slate-400">
+                                ข้อมูลที่บันทึกไว้ก่อนหน้า
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
 
-                <div class="flex items-center gap-3 mb-5">
+                <div class="overflow-x-auto">
+
+                    <table class="w-full min-w-[760px]">
+
+                        <thead class="bg-slate-50 border-b border-slate-200">
+
+                            <tr>
+
+                                <th
+                                    class="text-left py-3 px-4 sm:px-6 text-xs font-semibold text-slate-500"
+                                >
+                                    วันที่
+                                </th>
+
+                                <th
+                                    class="text-left py-3 px-4 text-xs font-semibold text-slate-500"
+                                >
+                                    ยอดขาย
+                                </th>
+
+                                <th
+                                    class="text-left py-3 px-4 text-xs font-semibold text-slate-500"
+                                >
+                                    จำนวนกล่อง
+                                </th>
+
+                                <th
+                                    class="text-left py-3 px-4 text-xs font-semibold text-slate-500"
+                                >
+                                    ค่าใช้จ่าย
+                                </th>
+
+                                <th
+                                    class="text-left py-3 px-4 text-xs font-semibold text-slate-500"
+                                >
+                                    กำไร
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="historyTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ANALYTICS SECTION
+        ===================================================== -->
+
+        <section id="section-analytics" class="hidden">
+
+            <div class="mb-6">
+
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">
+                    วิเคราะห์ข้อมูล
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    ดูภาพรวมยอดขาย ค่าใช้จ่าย และกำไร
+                </p>
+
+            </div>
+
+
+            <!-- Analytics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+
+                <div
+                    class="bg-white rounded-2xl border border-slate-200 p-5"
+                >
 
                     <div
-                        class="
-                            w-11 h-11
-                            rounded-xl
-                            bg-violet-50
-                            text-violet-600
-                            flex
-                            items-center
-                            justify-center
-                        "
+                        class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4"
                     >
-
                         <i
-                            data-lucide="cloud"
-                            width="21"
+                            data-lucide="package"
+                            class="w-5 h-5 text-blue-600"
                         ></i>
-
                     </div>
 
+                    <p class="text-sm text-slate-500">
+                        ค่าเฉลี่ยกล่องที่ขาย
+                    </p>
 
-                    <div>
-
-                        <div class="font-semibold">
-                            จัดการข้อมูล
-                        </div>
-
-                        <div class="text-xs text-slate-400">
-                            Google Sheets Sync
-                        </div>
-
-                    </div>
+                    <p
+                        id="avgBoxes"
+                        class="text-2xl font-bold text-slate-800 mt-1"
+                    >
+                        0
+                    </p>
 
                 </div>
-
-
-
-                <div class="space-y-3">
-
-
-                    <!-- LOAD -->
-
-                    <button
-                        class="
-                            app-btn
-                            btn-blue
-                            w-full
-                        "
-                        onclick="loadFromGoogleSheets()"
-                    >
-
-                        <i
-                            data-lucide="cloud-download"
-                            width="17"
-                        ></i>
-
-                        ดึงข้อมูลจาก Google Sheets
-
-                    </button>
-
-
-
-                    <!-- SYNC -->
-
-                    <button
-                        class="
-                            app-btn
-                            btn-success
-                            w-full
-                        "
-                        onclick="syncAllToGoogleSheets()"
-                    >
-
-                        <i
-                            data-lucide="cloud-upload"
-                            width="17"
-                        ></i>
-
-                        Sync ข้อมูลทั้งหมด
-
-                    </button>
-
-
-
-                    <!-- EXCEL -->
-
-                    <button
-                        class="
-                            app-btn
-                            btn-secondary
-                            w-full
-                        "
-                        onclick="exportToExcel()"
-                    >
-
-                        <i
-                            data-lucide="file-spreadsheet"
-                            width="17"
-                        ></i>
-
-                        Export Excel
-
-                    </button>
-
-                </div>
-
 
 
                 <div
-                    class="
-                        mt-5
-                        p-3
-                        rounded-xl
-                        bg-slate-50
-                    "
+                    class="bg-white rounded-2xl border border-slate-200 p-5"
                 >
 
                     <div
-                        class="
-                            text-xs
-                            font-medium
-                            text-slate-600
-                            mb-1
-                        "
+                        class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mb-4"
                     >
-                        การทำงานของข้อมูล
+                        <i
+                            data-lucide="wallet"
+                            class="w-5 h-5 text-emerald-600"
+                        ></i>
                     </div>
 
+                    <p class="text-sm text-slate-500">
+                        ยอดขายสะสม
+                    </p>
 
-                    <div
-                        class="
-                            text-[11px]
-                            text-slate-400
-                            leading-relaxed
-                        "
+                    <p
+                        id="accRevenue"
+                        class="text-2xl font-bold text-slate-800 mt-1"
                     >
-
-                        ข้อมูลที่กรอกจะถูกเก็บไว้ใน
-                        Local Storage ของเครื่อง
-
-                        <br><br>
-
-                        สามารถ Sync ข้อมูลไปยัง
-                        Google Sheets ได้ภายหลัง
-
-                    </div>
+                        ฿0.00
+                    </p>
 
                 </div>
 
-            </div>
-
-        </div>
-
-
-        <!-- =================================
-             SYSTEM INFORMATION
-        ================================== -->
-
-        <div class="settings-card mt-4">
-
-            <div class="flex items-center gap-3">
 
                 <div
-                    class="
-                        w-10 h-10
-                        rounded-xl
-                        bg-slate-100
-                        text-slate-600
-                        flex
-                        items-center
-                        justify-center
-                    "
+                    class="bg-white rounded-2xl border border-slate-200 p-5"
                 >
 
-                    <i
-                        data-lucide="info"
-                        width="19"
-                    ></i>
+                    <div
+                        class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center mb-4"
+                    >
+                        <i
+                            data-lucide="percent"
+                            class="w-5 h-5 text-orange-600"
+                        ></i>
+                    </div>
+
+                    <p class="text-sm text-slate-500">
+                        สัดส่วนค่าใช้จ่าย
+                    </p>
+
+                    <p
+                        id="expenseRatio"
+                        class="text-2xl font-bold text-slate-800 mt-1"
+                    >
+                        0%
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+                <div
+                    class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6"
+                >
+
+                    <div class="mb-5">
+
+                        <h3 class="font-semibold text-slate-800">
+                            แนวโน้มยอดขายและกำไร
+                        </h3>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            เปรียบเทียบข้อมูลในแต่ละวัน
+                        </p>
+
+                    </div>
+
+                    <div class="relative h-[280px] sm:h-[320px]">
+
+                        <canvas id="financialTrendChart"></canvas>
+
+                    </div>
 
                 </div>
 
 
-                <div>
+                <div
+                    class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6"
+                >
 
-                    <div class="font-semibold">
-                        เกี่ยวกับระบบ
+                    <div class="mb-5">
+
+                        <h3 class="font-semibold text-slate-800">
+                            จำนวนกล่องที่ขาย
+                        </h3>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            จำนวนกล่องในแต่ละวัน
+                        </p>
+
                     </div>
 
-                    <div class="text-xs text-slate-400">
-                        Suki Roll Daily Tracker v3.1
+                    <div class="relative h-[280px] sm:h-[320px]">
+
+                        <canvas id="boxesSoldChart"></canvas>
+
                     </div>
 
                 </div>
 
             </div>
 
+        </section>
+
+
+        <!-- =====================================================
+             SETTINGS SECTION
+        ===================================================== -->
+
+        <section id="section-settings" class="hidden">
+
+            <div class="mb-6">
+
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">
+                    ตั้งค่าระบบ
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500">
+                    ตั้งค่าการเชื่อมต่อและจัดการข้อมูล
+                </p>
+
+            </div>
+
+
+            <!-- Google Sheets -->
+            <div
+                class="bg-white rounded-2xl border border-slate-200 overflow-hidden mb-5"
+            >
+
+                <div
+                    class="px-4 sm:px-6 py-4 border-b border-slate-200"
+                >
+
+                    <div class="flex items-center gap-3">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center"
+                        >
+                            <i
+                                data-lucide="table-2"
+                                class="w-5 h-5 text-emerald-600"
+                            ></i>
+                        </div>
+
+                        <div>
+
+                            <h3 class="font-semibold text-slate-800">
+                                Google Sheets
+                            </h3>
+
+                            <p class="text-xs text-slate-400">
+                                เชื่อมต่อเพื่อสำรองข้อมูล
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="p-4 sm:p-6">
+
+                    <label
+                        for="gasUrlInput"
+                        class="block text-sm font-medium text-slate-700 mb-2"
+                    >
+                        Google Apps Script Web App URL
+                    </label>
+
+                    <input
+                        id="gasUrlInput"
+                        type="url"
+                        placeholder="https://script.google.com/macros/s/..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-200 text-sm"
+                    >
+
+
+                    <div
+                        class="flex flex-col sm:flex-row gap-3 mt-4"
+                    >
+
+                        <button
+                            onclick="saveGasUrl()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition"
+                        >
+                            <i data-lucide="save" class="w-4 h-4"></i>
+                            บันทึก URL
+                        </button>
+
+                        <button
+                            onclick="testGasConnection()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition"
+                        >
+                            <i data-lucide="wifi" class="w-4 h-4"></i>
+                            ทดสอบการเชื่อมต่อ
+                        </button>
+
+                        <button
+                            onclick="syncAllToGoogleSheets()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition"
+                        >
+                            <i data-lucide="cloud-upload" class="w-4 h-4"></i>
+                            Sync ข้อมูล
+                        </button>
+
+                    </div>
+
+
+                    <!-- Sync Status -->
+                    <div
+                        id="syncStatusBanner"
+                        class="hidden mt-4 rounded-xl border p-4"
+                    >
+
+                        <div class="flex items-start gap-3">
+
+                            <i
+                                data-lucide="info"
+                                class="w-5 h-5 shrink-0"
+                            ></i>
+
+                            <p
+                                id="syncStatusText"
+                                class="text-sm"
+                            ></p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Data Management -->
+            <div
+                class="bg-white rounded-2xl border border-slate-200 overflow-hidden"
+            >
+
+                <div
+                    class="px-4 sm:px-6 py-4 border-b border-slate-200"
+                >
+
+                    <div class="flex items-center gap-3">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center"
+                        >
+                            <i
+                                data-lucide="database"
+                                class="w-5 h-5 text-slate-600"
+                            ></i>
+                        </div>
+
+                        <div>
+
+                            <h3 class="font-semibold text-slate-800">
+                                จัดการข้อมูล
+                            </h3>
+
+                            <p class="text-xs text-slate-400">
+                                Export และนำเข้าข้อมูล
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="p-4 sm:p-6">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                        <button
+                            onclick="exportToExcel()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition"
+                        >
+                            <i
+                                data-lucide="file-spreadsheet"
+                                class="w-4 h-4"
+                            ></i>
+
+                            Export Excel
+                        </button>
+
+
+                        <button
+                            onclick="loadFromGoogleSheets()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-300 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition"
+                        >
+                            <i
+                                data-lucide="cloud-download"
+                                class="w-4 h-4"
+                            ></i>
+
+                            โหลดจาก Google Sheets
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="border-t border-slate-200 bg-white mt-10">
+
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+        >
 
             <div
-                class="
-                    mt-4
-                    grid
-                    grid-cols-1
-                    md:grid-cols-3
-                    gap-3
-                "
+                class="flex flex-col sm:flex-row items-center justify-between gap-3"
             >
 
-                <div class="p-3 rounded-xl bg-slate-50">
+                <p class="text-xs text-slate-400 text-center sm:text-left">
+                    สุกี้โรล Daily Tracker
+                </p>
 
-                    <div class="text-[10px] text-slate-400">
-                        ราคาเริ่มต้น
-                    </div>
-
-                    <div class="font-semibold text-slate-700">
-                        55 บาท / กล่อง
-                    </div>
-
-                </div>
-
-
-                <div class="p-3 rounded-xl bg-slate-50">
-
-                    <div class="text-[10px] text-slate-400">
-                        ระบบจัดเก็บ
-                    </div>
-
-                    <div class="font-semibold text-slate-700">
-                        Local Storage
-                    </div>
-
-                </div>
-
-
-                <div class="p-3 rounded-xl bg-slate-50">
-
-                    <div class="text-[10px] text-slate-400">
-                        Cloud
-                    </div>
-
-                    <div class="font-semibold text-slate-700">
-                        Google Sheets
-                    </div>
-
-                </div>
+                <p class="text-xs text-slate-400">
+                    v3.1
+                </p>
 
             </div>
 
         </div>
 
-    </section>
+    </footer>
 
-</main>
 
+    <!-- =========================================================
+         EXISTING JAVASCRIPT
+         ใช้ script.js เดิม
+    ========================================================= -->
 
+    <script src="script.js"></script>
 
-<!-- =========================================
-     FOOTER
-========================================= -->
 
-<footer
-    class="
-        text-center
-        text-xs
-        text-slate-400
-        py-8
-    "
->
+    <!-- =========================================================
+         LUCIDE
+    ========================================================= -->
 
-    สุกี้โรล Daily Tracker
-    <span class="mx-1">•</span>
-    Daily Sales Management
-
-</footer>
-
-
-
-<!-- =========================================
-     BASIC UI SCRIPT
-========================================= -->
-
-<script>
-
-    /*
-     * =========================================
-     * TAB SYSTEM
-     * =========================================
-     */
-
-    function switchTab(tab) {
-
-        const sections = [
-            "entry-section",
-            "analytics-section",
-            "settings-section"
-        ];
-
-        const tabs = [
-            "tab-entry",
-            "tab-analytics",
-            "tab-settings"
-        ];
-
-
-        sections.forEach(id => {
-
-            const element =
-                document.getElementById(id);
-
-            if (!element) return;
-
-            element.classList.remove("active");
-
-        });
-
-
-        tabs.forEach(id => {
-
-            const element =
-                document.getElementById(id);
-
-            if (!element) return;
-
-            element.classList.remove("active");
-
-        });
-
-
-        const section =
-            document.getElementById(
-                `${tab}-section`
-            );
-
-        const button =
-            document.getElementById(
-                `tab-${tab}`
-            );
-
-
-        if (section) {
-            section.classList.add("active");
-        }
-
-
-        if (button) {
-            button.classList.add("active");
-        }
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-
-        /*
-         * Analytics
-         */
-
-        if (tab === "analytics") {
-
-            if (
-                typeof updateAnalytics ===
-                "function"
-            ) {
-                updateAnalytics();
-            }
-
-            if (
-                typeof renderCharts ===
-                "function"
-            ) {
-                renderCharts();
-            }
-
-        }
-
-    }
-
-
-
-    /*
-     * =========================================
-     * MOBILE / DESKTOP PROFIT DISPLAY
-     * =========================================
-     *
-     * ไม่ได้สร้าง Floating Bar
-     * แค่ sync ข้อมูลกับ desktop display
-     */
-
-    function updateDesktopProfit() {
-
-        const profit =
-            document.getElementById(
-                "netProfit"
-            );
-
-        const desktop =
-            document.getElementById(
-                "desktopProfitDisplay"
-            );
-
-
-        if (!profit || !desktop) {
-            return;
-        }
-
-
-        const value =
-            parseFloat(
-                profit.textContent
-                    .replace(/,/g, "")
-            ) || 0;
-
-
-        desktop.textContent =
-            value.toLocaleString(
-                "th-TH",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            ) + " บาท";
-
-    }
-
-
-
-    /*
-     * =========================================
-     * DOM READY
-     * =========================================
-     */
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-
-            /*
-             * Lucide
-             */
-
-            if (
-                window.lucide &&
-                typeof lucide.createIcons ===
-                "function"
-            ) {
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
-
             }
-
-
-            /*
-             * Default Date
-             */
-
-            const dateInput =
-                document.getElementById(
-                    "recordDate"
-                );
-
-
-            if (
-                dateInput &&
-                !dateInput.value
-            ) {
-
-                const now =
-                    new Date();
-
-
-                const localDate =
-                    new Date(
-                        now.getTime()
-                        -
-                        now.getTimezoneOffset()
-                        * 60000
-                    )
-                    .toISOString()
-                    .split("T")[0];
-
-
-                dateInput.value =
-                    localDate;
-
-            }
-
-
-            /*
-             * Observe Profit
-             */
-
-            const profitElement =
-                document.getElementById(
-                    "netProfit"
-                );
-
-
-            if (profitElement) {
-
-                const observer =
-                    new MutationObserver(
-                        function () {
-
-                            updateDesktopProfit();
-
-                        }
-                    );
-
-
-                observer.observe(
-                    profitElement,
-                    {
-                        childList: true,
-                        subtree: true,
-                        characterData: true
-                    }
-                );
-
-            }
-
-
-            updateDesktopProfit();
-
-        }
-    );
-
-
-
-    /*
-     * =========================================
-     * WINDOW LOAD
-     * =========================================
-     */
-
-    window.addEventListener(
-        "load",
-        function () {
-
-            if (
-                window.lucide &&
-                typeof lucide.createIcons ===
-                "function"
-            ) {
-
-                lucide.createIcons();
-
-            }
-
-            updateDesktopProfit();
-
-        }
-    );
-
-</script>
-
-
-
-<!-- =========================================
-     MAIN APPLICATION SCRIPT
-========================================= -->
-
-<script src="script.js"></script>
-
-
-
-<script>
-
-    /*
-     * หลัง script.js โหลดเสร็จ
-     */
-
-    window.addEventListener(
-        "load",
-        function () {
-
-            if (
-                window.lucide &&
-                typeof lucide.createIcons ===
-                "function"
-            ) {
-
-                lucide.createIcons();
-
-            }
-
-            updateDesktopProfit();
-
-        }
-    );
-
-</script>
-
+        });
+    </script>
 
 </body>
 

@@ -1,847 +1,1128 @@
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap');
+<!DOCTYPE html>
+<html lang="th">
 
-  #ledger-root {
-    --bg-main: #F1F5F9;
-    --card-bg: #FFFFFF;
-    --border-color: #CBD5E1;
-    --text-main: #0F172A;
-    --text-sub: #475569;
-    
-    --green-bg: #DCFCE7;
-    --green-text: #15803D;
-    --green-border: #86EFAC;
-    
-    --orange-bg: #FFEDD5;
-    --orange-text: #C2410C;
-    --orange-border: #FDBA74;
-    
-    --red-bg: #FEE2E2;
-    --red-text: #B91C1C;
-    --red-border: #FCA5A5;
-    
-    --blue-btn: #2563EB;
-    
-    font-family: 'Prompt', sans-serif;
-    color: var(--text-main);
-    background-color: var(--bg-main);
-    padding: 16px 12px 60px;
-    min-height: 100vh;
-    box-sizing: border-box;
-    font-size: 18px;
-    -webkit-tap-highlight-color: transparent;
-  }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  #ledger-root * { box-sizing: border-box; }
-  #ledger-root .wrap { max-width: 600px; margin: 0 auto; }
+    <title>สุกี้โรล Daily Tracker v3.1</title>
 
-  /* Header */
-  #ledger-root .app-header {
-    background: var(--card-bg);
-    padding: 16px;
-    border-radius: 16px;
-    border: 2px solid var(--border-color);
-    margin-bottom: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  #ledger-root .app-header h1 {
-    font-size: 22px;
-    font-weight: 800;
-    margin: 0;
-    color: var(--text-main);
-  }
-  #ledger-root .app-header p {
-    margin: 2px 0 0;
-    font-size: 15px;
-    color: var(--text-sub);
-  }
-  #ledger-root .top-btns {
-    display: flex;
-    gap: 8px;
-  }
-  #ledger-root .btn-sub-action {
-    font-family: 'Prompt', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 8px 12px;
-    background: #E2E8F0;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    color: var(--text-main);
-    cursor: pointer;
-  }
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  /* Date Control Bar */
-  #ledger-root .date-control-card {
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    padding: 12px;
-    margin-bottom: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-  #ledger-root .date-nav-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 8px;
-  }
-  #ledger-root .btn-date-nav {
-    font-family: 'Prompt', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 10px 16px;
-    background: #F8FAFC;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    color: var(--text-main);
-    cursor: pointer;
-    min-height: 48px;
-  }
-  #ledger-root .btn-date-nav:active { background: #CBD5E1; }
-  #ledger-root .date-picker-big {
-    font-family: 'Prompt', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    padding: 8px 12px;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    background: #FFF;
-    color: var(--text-main);
-    text-align: center;
-  }
-  #ledger-root .date-text-display {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text-main);
-    text-align: center;
-  }
-  #ledger-root .btn-today-pill {
-    font-family: 'Prompt', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    background: #EFF6FF;
-    color: #1D4ED8;
-    border: 1.5px solid #BFDBFE;
-    padding: 6px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-  }
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-  /* Big Metric Cards */
-  #ledger-root .summary-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  #ledger-root .metric-card-big {
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    padding: 14px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  #ledger-root .metric-card-big.cost { background: var(--orange-bg); border-color: var(--orange-border); }
-  #ledger-root .metric-card-big.revenue { background: var(--green-bg); border-color: var(--green-border); }
-  #ledger-root .metric-card-big.profit-pos { background: var(--green-bg); border-color: var(--green-border); }
-  #ledger-root .metric-card-big.profit-neg { background: var(--red-bg); border-color: var(--red-border); }
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  #ledger-root .metric-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text-sub);
-  }
-  #ledger-root .metric-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 28px;
-    font-weight: 800;
-  }
-  #ledger-root .cost .metric-num { color: var(--orange-text); }
-  #ledger-root .revenue .metric-num { color: var(--green-text); }
-  #ledger-root .profit-pos .metric-num { color: var(--green-text); }
-  #ledger-root .profit-neg .metric-num { color: var(--red-text); }
+    <!-- SheetJS -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
-  /* Recorded List */
-  #ledger-root .section-title {
-    font-size: 19px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    color: var(--text-main);
-  }
-  #ledger-root .records-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  #ledger-root .record-item {
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  #ledger-root .record-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  #ledger-root .record-name {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text-main);
-  }
-  #ledger-root .record-cat {
-    font-size: 13px;
-    font-weight: 700;
-    background: #E0E7FF;
-    color: #3730A3;
-    padding: 3px 8px;
-    border-radius: 6px;
-  }
-  #ledger-root .record-qty {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-sub);
-  }
-  #ledger-root .record-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #F8FAFC;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #E2E8F0;
-    font-size: 16px;
-  }
-  #ledger-root .record-num-bold {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-  }
-  #ledger-root .btn-delete-big {
-    background: #FEE2E2;
-    color: var(--red-text);
-    border: 1px solid var(--red-border);
-    font-family: 'Prompt', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    align-self: flex-end;
-  }
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  /* Form Elder */
-  #ledger-root .add-card-elder {
-    background: var(--card-bg);
-    border: 3px solid #94A3B8;
-    border-radius: 20px;
-    padding: 16px;
-    margin-bottom: 24px;
-  }
-  #ledger-root .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 12px;
-  }
-  #ledger-root .field-label {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text-main);
-  }
-  #ledger-root .add-card-elder select, #ledger-root .add-card-elder input {
-    font-family: 'Prompt', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    padding: 12px 14px;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    background: #F8FAFC;
-    color: var(--text-main);
-    outline: none;
-    width: 100%;
-    min-height: 52px;
-  }
-  #ledger-root .add-card-elder select:focus, #ledger-root .add-card-elder input:focus {
-    border-color: var(--blue-btn);
-    background: #FFF;
-  }
-  #ledger-root .form-2col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  #ledger-root .auto-calc-box {
-    background: #FEF3C7;
-    border: 2px solid #FCD34D;
-    border-radius: 14px;
-    padding: 12px;
-    margin-bottom: 12px;
-    display: none;
-  }
-  #ledger-root .btn-submit-elder {
-    font-family: 'Prompt', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    background: var(--blue-btn);
-    color: #FFF;
-    border: none;
-    border-radius: 14px;
-    padding: 14px;
-    cursor: pointer;
-    width: 100%;
-    min-height: 56px;
-    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-    margin-top: 6px;
-  }
-  #ledger-root .btn-submit-elder:active { background: #1D4ED8; }
-  #ledger-root .error-msg { color: var(--red-text); font-size: 15px; font-weight: 700; margin-top: 6px; }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-  /* History Accordion */
-  #ledger-root .history-accordion {
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    padding: 14px;
-    font-size: 18px;
-    font-weight: 800;
-    width: 100%;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-  }
-  #ledger-root .history-body { display: none; margin-top: 12px; }
-  #ledger-root .history-body.open { display: block; }
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #f8fafc;
+        }
 
-  #ledger-root .grand-summary {
-    background: #F8FAFC;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  #ledger-root .grand-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 16px;
-    font-weight: 700;
-  }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
 
-  #ledger-root .empty-box {
-    text-align: center;
-    color: var(--text-sub);
-    padding: 24px;
-    font-size: 17px;
-    font-weight: 600;
-    background: var(--card-bg);
-    border: 2px dashed var(--border-color);
-    border-radius: 16px;
-  }
-</style>
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
 
-<div id="ledger-root">
-  <div class="wrap" id="ledger-wrap">
-    <div class="empty-box">กำลังโหลดข้อมูล…</div>
-  </div>
-</div>
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
 
-<script>
-(function () {
-  const INGREDIENT_GROUPS = [
-    {
-      category: "สุกี้โรล",
-      items: [
-        { name: "ผักกาด", unit: "โล" },
-        { name: "หมูบด", unit: "โล" },
-        { name: "หมูเด้ง", unit: "ถุง" },
-        { name: "วุ้นเส้น", unit: "ถุง" },
-        { name: "แครอท", unit: "หัว" },
-        { name: "รากผักชี", unit: "กำ" },
-        { name: "กระเทียม", unit: "ถุง" },
-        { name: "พริกไทย", unit: "ถุง" },
-        { name: "ไข่", unit: "แผง" },
-        { name: "ซอสหอยนางรม", unit: "แกลอน" },
-        { name: "ซอสฝาเขียว", unit: "ขวด" },
-        { name: "ซีอิ้วขาว", unit: "ขวด" },
-        { name: "แป้ง", unit: "ถุง" }
-      ]
-    },
-    {
-      category: "น้ำจิ้ม",
-      items: [
-        { name: "พริก", unit: "ถุง" },
-        { name: "กระเทียม (น้ำจิ้ม)", nameDisplay: "กระเทียม", unit: "ถุง" },
-        { name: "น้ำส้มสายชู", unit: "ขวด" },
-        { name: "น้ำกระเทียมดอง", unit: "ขวด" },
-        { name: "เต้าหู้ยี้", unit: "โถ" },
-        { name: "ซอสมะเขือเทศ", unit: "ถุง" },
-        { name: "ซอสพริก", unit: "แกลอน" },
-        { name: "งา", unit: "ถุง" },
-        { name: "น้ำตาล", unit: "ถุง" },
-        { name: "น้ำมันงา", unit: "ขวด" },
-        { name: "ผงหม่าล่า", unit: "ถุง" },
-        { name: "น้ำจิ้มงา", unit: "ถุง" }
-      ]
-    },
-    {
-      category: "อื่นๆ",
-      items: [
-        { name: "ขายได้", unit: "กล่อง", defaultPrice: 55 },
-        { name: "กล่อง", unit: "แพ็ค" },
-        { name: "ถุง", unit: "แพ็ค" },
-        { name: "น้ำแข็ง", unit: "ถุง" },
-        { name: "ค่าที่ขายของ", unit: "วัน" },
-        { name: "แก๊ส", unit: "ถัง" },
-        { name: "ถุงมือ", unit: "แพ็ค" },
-        { name: "ตะเกียบ", unit: "แพ็ค" },
-        { name: "ถ้วยน้ำจิ้ม", unit: "แพ็ค" }
-      ]
-    }
-  ];
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
 
-  const STORAGE_KEY = 'daily-ledger-entries';
-  let entries = [];
-  let selectedDate = todayStr();
-  let overviewOpen = false;
-  let loaded = false;
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
 
-  function pad2(n) { return String(n).padStart(2, '0'); }
+        .tab-btn {
+            transition: all 0.2s ease;
+        }
 
-  function todayStr() {
-    const d = new Date();
-    return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
-  }
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+        }
 
-  function fmtDateThai(dateStr) {
-    const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-    const [y, m, d] = dateStr.split('-').map(Number);
-    return `${d} ${months[m - 1]} ${y + 543}`;
-  }
+        .stat-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
 
-  function money(n) {
-    const sign = n < 0 ? '-' : '';
-    return sign + Math.abs(n).toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-  }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+        }
 
-  function addDays(dateStr, delta) {
-    const [y, m, d] = dateStr.split('-').map(Number);
-    const dt = new Date(y, m - 1, d);
-    dt.setDate(dt.getDate() + delta);
-    return `${dt.getFullYear()}-${pad2(dt.getMonth() + 1)}-${pad2(dt.getDate())}`;
-  }
+        .chart-container {
+            position: relative;
+            height: 320px;
+        }
 
-  async function loadEntries() {
-    try {
-      const res = await window.storage.get(STORAGE_KEY, false);
-      const raw = res && res.value ? JSON.parse(res.value) : [];
-      entries = raw.map(e => ({
-        id: e.id,
-        date: e.date,
-        name: e.name,
-        category: e.category || '',
-        qty: e.qty !== undefined ? parseFloat(e.qty) : 1,
-        unit: e.unit || '',
-        cost: e.cost !== undefined ? e.cost : 0,
-        revenue: e.revenue !== undefined ? e.revenue : 0
-      }));
-    } catch (e) {
-      entries = [];
-    }
-    loaded = true;
-    render();
-  }
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 260px;
+            }
+        }
+    </style>
+</head>
 
-  async function saveEntries() {
-    try {
-      await window.storage.set(STORAGE_KEY, JSON.stringify(entries), false);
-    } catch (e) {
-      console.error('บันทึกไม่สำเร็จ', e);
-    }
-  }
+<body class="min-h-screen text-slate-700">
 
-  function entriesForDate(dateStr) {
-    return entries.filter(e => e.date === dateStr);
-  }
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
 
-  function computeTotals(list) {
-    let cost = 0, revenue = 0;
-    for (const e of list) {
-      cost += e.cost || 0;
-      revenue += e.revenue || 0;
-    }
-    return { cost, revenue, net: revenue - cost };
-  }
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
 
-  function groupedByDate() {
-    const map = {};
-    for (const e of entries) {
-      if (!map[e.date]) map[e.date] = [];
-      map[e.date].push(e);
-    }
-    return Object.keys(map).sort((a, b) => b.localeCompare(a)).map(date => ({
-      date,
-      list: map[date],
-      totals: computeTotals(map[date])
-    }));
-  }
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-  function renderDropdownOptions() {
-    return INGREDIENT_GROUPS.map(group => `
-      <optgroup label="── หมวด: ${escapeHtml(group.category)} ──">
-        ${group.items.map(item => {
-          const displayName = item.nameDisplay || item.name;
-          const priceAttr = item.defaultPrice ? `data-price="${item.defaultPrice}"` : '';
-          return `<option value="${escapeHtml(displayName)}" data-unit="${escapeHtml(item.unit)}" data-category="${escapeHtml(group.category)}" ${priceAttr}>${escapeHtml(displayName)} (หน่วย: ${escapeHtml(item.unit)})</option>`;
-        }).join('')}
-      </optgroup>
-    `).join('');
-  }
+                <!-- Logo / Title -->
+                <div class="flex items-center gap-3">
 
-  function render() {
-    const wrap = document.getElementById('ledger-wrap');
-    if (!loaded) return;
+                    <div
+                        class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                        <i data-lucide="store" class="w-6 h-6"></i>
+                    </div>
 
-    const todayList = entriesForDate(selectedDate);
-    const todayTotals = computeTotals(todayList);
-    const grand = computeTotals(entries);
-    const days = groupedByDate();
-    const isToday = selectedDate === todayStr();
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
+                            สุกี้โรล
+                        </h1>
 
-    wrap.innerHTML = `
-      <div class="app-header">
-        <div>
-          <h1>สมุดบันทึกรับ-จ่าย</h1>
-          <p>ร้านสุกี้โรล & น้ำจิ้ม</p>
-        </div>
-        <div class="top-btns">
-          <button type="button" class="btn-sub-action" id="export-json">💾 เซฟไฟล์</button>
-          <button type="button" class="btn-sub-action" id="import-json">📂 ดึงไฟล์</button>
-          <input type="file" id="import-file" accept="application/json,.json" style="display:none">
-        </div>
-      </div>
+                        <p class="text-xs sm:text-sm text-slate-400">
+                            Daily Tracker
+                        </p>
+                    </div>
 
-      <div class="date-control-card">
-        <div class="date-text-display">
-          📅 ${fmtDateThai(selectedDate)}
-        </div>
-        <div class="date-nav-row">
-          <button class="btn-date-nav" id="prev-day">◄ วันก่อนหน้า</button>
-          <input type="date" class="date-picker-big" id="date-picker" value="${selectedDate}">
-          <button class="btn-date-nav" id="next-day">วันถัดไป ►</button>
-        </div>
-        ${!isToday ? '<button class="btn-today-pill" id="jump-today">กลับมาดู "วันนี้"</button>' : ''}
-      </div>
-
-      <div class="summary-box">
-        <div class="metric-card-big revenue">
-          <span class="metric-title">💰 ขายได้เงิน (รายรับ)</span>
-          <span class="metric-num">฿${money(todayTotals.revenue)}</span>
-        </div>
-        <div class="metric-card-big cost">
-          <span class="metric-title">🛒 ซื้อของไป (ทุน)</span>
-          <span class="metric-num">฿${money(todayTotals.cost)}</span>
-        </div>
-        <div class="metric-card-big ${todayTotals.net >= 0 ? 'profit-pos' : 'profit-neg'}">
-          <span class="metric-title">${todayTotals.net >= 0 ? '💵 เหลือเงิน (กำไร)' : '⚠️ ขาดทุน'}</span>
-          <span class="metric-num">${todayTotals.net >= 0 ? '+' : ''}฿${money(todayTotals.net)}</span>
-        </div>
-      </div>
-
-      <div class="section-title">📌 รายการบันทึกวันนี้ (${todayList.length} รายการ)</div>
-
-      <div class="records-container">
-        ${todayList.length === 0
-          ? '<div class="empty-box">ยังไม่มีรายการบันทึกของวันนี้<br>กรอกข้อมูลที่แบบฟอร์มด้านล่างได้เลยครับ</div>'
-          : todayList.map(e => recordCardHtml(e)).join('')}
-      </div>
-
-      <div class="add-card-elder">
-        <div class="section-title" style="margin-bottom:12px; text-align:center;">➕ เพิ่มรายการใหม่</div>
-        <form id="add-form">
-          <div class="form-field">
-            <label class="field-label" for="f-name">1. เลือกรายการ</label>
-            <select id="f-name">
-              <option value="" disabled selected>-- กดที่นี่เพื่อเลือกของ --</option>
-              ${renderDropdownOptions()}
-            </select>
-          </div>
-
-          <div class="form-2col">
-            <div class="form-field">
-              <label class="field-label" for="f-qty">2. จำนวน</label>
-              <input type="text" inputmode="decimal" id="f-qty" value="1">
-            </div>
-            <div class="form-field">
-              <label class="field-label" for="f-unit">หน่วยนับ</label>
-              <input type="text" id="f-unit" placeholder="เช่น โล/ถุง/กล่อง">
-            </div>
-          </div>
-
-          <div class="auto-calc-box" id="auto-calc-box">
-            <div class="form-field" style="margin-bottom:0;">
-              <label class="field-label" for="f-unit-price" style="color:#92400E;">🏷️ ราคาขายกล่องละ (บาท)</label>
-              <input type="text" inputmode="decimal" id="f-unit-price" value="50" style="background:#FFF; font-weight:800; text-align:center; color:#92400E; font-size:22px;">
-              <span style="font-size:14px; color:#B45309; text-align:center; margin-top:4px;">✨ ใส่จำนวนกล่อง แล้วระบบจะคิดยอดเงินขายได้ให้อัตโนมัติ</span>
-            </div>
-          </div>
-
-          <div class="form-2col">
-            <div class="form-field">
-              <label class="field-label" for="f-cost">3. ซื้อมา (บาท)</label>
-              <input type="text" inputmode="decimal" id="f-cost" placeholder="0">
-            </div>
-            <div class="form-field">
-              <label class="field-label" for="f-revenue">4. ขายได้ (บาท)</label>
-              <input type="text" inputmode="decimal" id="f-revenue" placeholder="0">
-            </div>
-          </div>
-
-          <button type="submit" class="btn-submit-elder">✔ กดเพื่อบันทึกรายการ</button>
-          <div class="error-msg" id="form-err"></div>
-        </form>
-      </div>
-
-      <button class="history-accordion" id="overview-toggle">
-        <span>📖 ดูประวัติย้อนหลังทั้งหมด (${days.length} วัน)</span>
-        <span>${overviewOpen ? '▲' : '▼'}</span>
-      </button>
-
-      <div class="history-body ${overviewOpen ? 'open' : ''}">
-        <div class="grand-summary">
-          <div class="grand-row">
-            <span>ซื้อของรวมทั้งหมด:</span>
-            <span style="color:var(--orange-text)">฿${money(grand.cost)}</span>
-          </div>
-          <div class="grand-row">
-            <span>ขายได้รวมทั้งหมด:</span>
-            <span style="color:var(--green-text)">฿${money(grand.revenue)}</span>
-          </div>
-          <div class="grand-row" style="font-size:18px; margin-top:4px;">
-            <span>${grand.net >= 0 ? 'กำไรสะสมรวม:' : 'ขาดทุนสะสมรวม:'}</span>
-            <span style="color:${grand.net >= 0 ? 'var(--green-text)' : 'var(--red-text)'}">${grand.net >= 0 ? '+' : ''}฿${money(grand.net)}</span>
-          </div>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          ${days.length === 0 
-            ? '<div class="empty-box">ยังไม่มีประวัติการบันทึก</div>' 
-            : days.map(d => `
-              <div class="record-item" data-date="${d.date}" style="cursor:pointer;">
-                <div class="record-top">
-                  <span style="font-size:18px; font-weight:800;">📅 ${fmtDateThai(d.date)}</span>
-                  <span style="font-size:18px; font-weight:800; color:${d.totals.net >= 0 ? 'var(--green-text)' : 'var(--red-text)'}">
-                    ${d.totals.net >= 0 ? '+' : ''}฿${money(d.totals.net)}
-                  </span>
                 </div>
-                <div style="font-size:15px; color:var(--text-sub);">
-                  มี ${d.list.length} รายการ (ซื้อของไป ฿${money(d.totals.cost)})
+
+                <!-- Navigation -->
+                <nav class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+
+                    <button
+                        id="tab-entry"
+                        onclick="switchTab('entry')"
+                        class="tab-btn bg-emerald-600 text-white shadow-sm px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <i data-lucide="clipboard-pen-line" class="w-4 h-4"></i>
+                        บันทึกข้อมูล
+                    </button>
+
+                    <button
+                        id="tab-analytics"
+                        onclick="switchTab('analytics')"
+                        class="tab-btn text-slate-500 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <i data-lucide="chart-no-axes-combined" class="w-4 h-4"></i>
+                        Analytics
+                    </button>
+
+                    <button
+                        id="tab-settings"
+                        onclick="switchTab('settings')"
+                        class="tab-btn text-slate-500 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        ตั้งค่า
+                    </button>
+
+                </nav>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+
+        <!-- =====================================================
+             STATUS BANNER
+        ====================================================== -->
+        <div
+            id="syncStatusBanner"
+            class="hidden mb-6 p-3 rounded-xl text-xs sm:text-sm font-medium flex justify-between items-center transition shadow-sm">
+
+            <div class="flex items-center gap-2">
+
+                <i data-lucide="info" class="w-4 h-4"></i>
+
+                <span id="syncStatusText">
+                    สถานะ
+                </span>
+
+            </div>
+
+            <button
+                onclick="document.getElementById('syncStatusBanner').classList.add('hidden')"
+                class="opacity-70 hover:opacity-100">
+
+                <i data-lucide="x" class="w-4 h-4"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- =====================================================
+             ENTRY SECTION
+        ====================================================== -->
+        <section id="section-entry">
+
+            <!-- Page Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+
+                <div>
+
+                    <h2 class="text-2xl font-bold text-slate-800">
+                        บันทึกยอดขายประจำวัน
+                    </h2>
+
+                    <p class="text-sm text-slate-400 mt-1">
+                        บันทึกยอดขายและค่าใช้จ่ายของแต่ละวัน
+                    </p>
+
                 </div>
-              </div>
-            `).join('')}
+
+                <div class="flex flex-wrap gap-2">
+
+                    <button
+                        onclick="loadLastTemplate()"
+                        class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition text-sm font-medium flex items-center gap-2">
+
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+
+                        ใช้รายการล่าสุด
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DATE
+            ================================================== -->
+            <div class="card p-4 sm:p-5 mb-6">
+
+                <div class="flex flex-col sm:flex-row sm:items-end gap-4">
+
+                    <div class="w-full sm:w-auto">
+
+                        <label
+                            for="recordDate"
+                            class="block text-sm font-medium text-slate-600 mb-2">
+
+                            วันที่บันทึก
+
+                        </label>
+
+                        <input
+                            type="date"
+                            id="recordDate"
+                            class="w-full sm:w-56 bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+
+                    </div>
+
+                    <div class="text-xs text-slate-400 pb-1">
+                        ข้อมูลจะถูกเก็บแยกตามวันที่
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SUMMARY CARDS
+            ================================================== -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+
+                <!-- Revenue -->
+                <div class="card stat-card p-4 sm:p-5">
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div
+                            class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+
+                            <i data-lucide="banknote" class="w-5 h-5"></i>
+
+                        </div>
+
+                        <span class="text-xs text-slate-400">
+                            รายรับ
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="totalRevenue"
+                        class="text-xl sm:text-2xl font-bold text-slate-800">
+
+                        0
+
+                    </div>
+
+                    <div class="text-xs text-slate-400 mt-1">
+                        บาท
+                    </div>
+
+                </div>
+
+
+                <!-- Boxes -->
+                <div class="card stat-card p-4 sm:p-5">
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div
+                            class="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+
+                            <i data-lucide="package" class="w-5 h-5"></i>
+
+                        </div>
+
+                        <span class="text-xs text-slate-400">
+                            ยอดขาย
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="boxesSoldText"
+                        class="text-xl sm:text-2xl font-bold text-slate-800">
+
+                        ขายได้ 0 กล่อง
+
+                    </div>
+
+                    <div class="text-xs text-slate-400 mt-1">
+                        จำนวนกล่อง
+                    </div>
+
+                </div>
+
+
+                <!-- Expense -->
+                <div class="card stat-card p-4 sm:p-5">
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div
+                            class="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center">
+
+                            <i data-lucide="receipt" class="w-5 h-5"></i>
+
+                        </div>
+
+                        <span class="text-xs text-slate-400">
+                            รายจ่าย
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="totalExpense"
+                        class="text-xl sm:text-2xl font-bold text-slate-800">
+
+                        0
+
+                    </div>
+
+                    <div class="text-xs text-slate-400 mt-1">
+                        บาท
+                    </div>
+
+                </div>
+
+
+                <!-- Profit -->
+                <div class="card stat-card p-4 sm:p-5">
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div
+                            class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
+
+                            <i data-lucide="trending-up" class="w-5 h-5"></i>
+
+                        </div>
+
+                        <span class="text-xs text-slate-400">
+                            กำไรสุทธิ
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="netProfit"
+                        class="text-xl sm:text-2xl font-bold text-slate-800">
+
+                        0
+
+                    </div>
+
+                    <div
+                        id="profitMarginText"
+                        class="text-xs text-slate-400 mt-1">
+
+                        Profit Margin 0%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 INPUT TABLE
+            ================================================== -->
+            <div class="card overflow-hidden mb-6">
+
+                <!-- Table Header -->
+                <div
+                    class="px-4 sm:px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+                    <div>
+
+                        <h3 class="font-bold text-slate-800">
+                            รายการวันนี้
+                        </h3>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            กรอกจำนวนและค่าใช้จ่ายที่เกิดขึ้นจริง
+                        </p>
+
+                    </div>
+
+                    <button
+                        onclick="addRowAndFocus()"
+                        class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition text-sm font-medium flex items-center justify-center gap-2 shadow-sm">
+
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+
+                        เพิ่มรายการ
+
+                    </button>
+
+                </div>
+
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+
+                    <table class="w-full min-w-[720px]">
+
+                        <thead class="bg-slate-50 border-b border-slate-200">
+
+                            <tr>
+
+                                <th
+                                    class="text-left py-3 px-3 sm:px-6 text-xs font-semibold text-slate-500 w-[40%]">
+
+                                    รายการ
+
+                                </th>
+
+                                <th
+                                    class="text-left py-3 px-3 text-xs font-semibold text-slate-500 w-[20%]">
+
+                                    จำนวน
+
+                                </th>
+
+                                <th
+                                    class="text-left py-3 px-3 text-xs font-semibold text-slate-500 w-[30%]">
+
+                                    ราคารวม / ยอดขาย
+
+                                </th>
+
+                                <th
+                                    class="text-center py-3 px-3 text-xs font-semibold text-slate-500 w-[10%]">
+
+                                    ลบ
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="itemsTableBody">
+
+                            <!-- JS Render -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Table Footer -->
+                <div
+                    class="px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row gap-3 justify-between">
+
+                    <button
+                        onclick="clearAllRows()"
+                        class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 transition text-sm font-medium flex items-center justify-center gap-2">
+
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+
+                        ล้างตาราง
+
+                    </button>
+
+                    <div class="flex flex-col sm:flex-row gap-2">
+
+                        <button
+                            onclick="exportToExcel()"
+                            class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 transition text-sm font-medium flex items-center justify-center gap-2">
+
+                            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+
+                            Export Excel
+
+                        </button>
+
+                        <button
+                            onclick="saveDailyData()"
+                            class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition text-sm font-semibold flex items-center justify-center gap-2 shadow-sm">
+
+                            <i data-lucide="save" class="w-4 h-4"></i>
+
+                            บันทึกข้อมูล
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 HISTORY
+            ================================================== -->
+            <div class="card overflow-hidden">
+
+                <div
+                    class="px-4 sm:px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
+                    <div>
+
+                        <h3 class="font-bold text-slate-800">
+                            ประวัติการบันทึก
+                        </h3>
+
+                        <p class="text-xs text-slate-400 mt-1">
+                            ดูข้อมูลยอดขายและกำไรย้อนหลัง
+                        </p>
+
+                    </div>
+
+                    <button
+                        onclick="syncAllToGoogleSheets()"
+                        class="px-4 py-2.5 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition text-sm font-medium flex items-center justify-center gap-2">
+
+                        <i data-lucide="cloud-upload" class="w-4 h-4"></i>
+
+                        Sync ทั้งหมด
+
+                    </button>
+
+                </div>
+
+
+                <div class="overflow-x-auto">
+
+                    <table class="w-full min-w-[760px]">
+
+                        <thead class="bg-slate-50 border-b border-slate-200">
+
+                            <tr>
+
+                                <th
+                                    class="text-left px-6 py-3 text-xs font-semibold text-slate-500">
+
+                                    วันที่
+
+                                </th>
+
+                                <th
+                                    class="text-left px-6 py-3 text-xs font-semibold text-slate-500">
+
+                                    ยอดขาย
+
+                                </th>
+
+                                <th
+                                    class="text-left px-6 py-3 text-xs font-semibold text-slate-500">
+
+                                    รายรับ
+
+                                </th>
+
+                                <th
+                                    class="text-left px-6 py-3 text-xs font-semibold text-slate-500">
+
+                                    รายจ่าย
+
+                                </th>
+
+                                <th
+                                    class="text-left px-6 py-3 text-xs font-semibold text-slate-500">
+
+                                    กำไร
+
+                                </th>
+
+                                <th
+                                    class="text-right px-6 py-3 text-xs font-semibold text-slate-500">
+
+                                    จัดการ
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="historyTableBody">
+
+                            <!-- JS Render -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ANALYTICS SECTION
+        ====================================================== -->
+        <section id="section-analytics" class="hidden">
+
+            <!-- Header -->
+            <div class="mb-6">
+
+                <h2 class="text-2xl font-bold text-slate-800">
+                    Analytics
+                </h2>
+
+                <p class="text-sm text-slate-400 mt-1">
+                    ภาพรวมยอดขาย รายจ่าย และกำไรจากข้อมูลที่บันทึกไว้
+                </p>
+
+            </div>
+
+
+            <!-- Analytics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+
+                <!-- Average -->
+                <div class="card p-5">
+
+                    <div class="flex items-center gap-3 mb-4">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+
+                            <i data-lucide="package-open" class="w-5 h-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-slate-400">
+                                ยอดขายเฉลี่ย
+                            </p>
+
+                            <p class="text-sm font-medium text-slate-600">
+                                ต่อวัน
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="flex items-end gap-2">
+
+                        <span
+                            id="avgBoxes"
+                            class="text-3xl font-bold text-slate-800">
+
+                            0
+
+                        </span>
+
+                        <span class="text-sm text-slate-400 mb-1">
+                            กล่อง
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Revenue -->
+                <div class="card p-5">
+
+                    <div class="flex items-center gap-3 mb-4">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+
+                            <i data-lucide="wallet" class="w-5 h-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-slate-400">
+                                รายรับสะสม
+                            </p>
+
+                            <p class="text-sm font-medium text-slate-600">
+                                จากทุกวันที่บันทึก
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="flex items-end gap-2">
+
+                        <span
+                            id="accRevenue"
+                            class="text-3xl font-bold text-slate-800">
+
+                            0
+
+                        </span>
+
+                        <span class="text-sm text-slate-400 mb-1">
+                            บาท
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Expense Ratio -->
+                <div class="card p-5">
+
+                    <div class="flex items-center gap-3 mb-4">
+
+                        <div
+                            class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center">
+
+                            <i data-lucide="percent" class="w-5 h-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-slate-400">
+                                สัดส่วนรายจ่าย
+                            </p>
+
+                            <p class="text-sm font-medium text-slate-600">
+                                ต่อรายรับ
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="flex items-end gap-2">
+
+                        <span
+                            id="expenseRatio"
+                            class="text-3xl font-bold text-slate-800">
+
+                            0
+
+                        </span>
+
+                        <span class="text-sm text-slate-400 mb-1">
+                            %
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Financial Chart -->
+            <div class="card p-4 sm:p-6 mb-6">
+
+                <div class="mb-5">
+
+                    <h3 class="font-bold text-slate-800">
+                        แนวโน้มทางการเงิน
+                    </h3>
+
+                    <p class="text-xs text-slate-400 mt-1">
+                        เปรียบเทียบรายรับ รายจ่าย และกำไรในแต่ละวัน
+                    </p>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="financialTrendChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- Boxes Chart -->
+            <div class="card p-4 sm:p-6">
+
+                <div class="mb-5">
+
+                    <h3 class="font-bold text-slate-800">
+                        จำนวนกล่องที่ขายได้
+                    </h3>
+
+                    <p class="text-xs text-slate-400 mt-1">
+                        แสดงจำนวนกล่องที่ขายในแต่ละวัน
+                    </p>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="boxesSoldChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SETTINGS SECTION
+        ====================================================== -->
+        <section id="section-settings" class="hidden">
+
+            <!-- Header -->
+            <div class="mb-6">
+
+                <h2 class="text-2xl font-bold text-slate-800">
+                    ตั้งค่าระบบ
+                </h2>
+
+                <p class="text-sm text-slate-400 mt-1">
+                    ตั้งค่าการเชื่อมต่อ Google Sheets และจัดการข้อมูล
+                </p>
+
+            </div>
+
+
+            <!-- Google Sheets Card -->
+            <div class="card p-5 sm:p-6 mb-6">
+
+                <div class="flex items-start gap-4 mb-6">
+
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+
+                        <i data-lucide="table-2" class="w-6 h-6"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-bold text-slate-800">
+                            Google Sheets
+                        </h3>
+
+                        <p class="text-sm text-slate-400 mt-1">
+                            เชื่อมต่อระบบกับ Google Apps Script Web App
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- URL -->
+                <div class="mb-5">
+
+                    <label
+                        for="gasUrlInput"
+                        class="block text-sm font-medium text-slate-600 mb-2">
+
+                        Google Apps Script Web App URL
+
+                    </label>
+
+                    <input
+                        type="url"
+                        id="gasUrlInput"
+                        placeholder="https://script.google.com/macros/s/XXXXXXXX/exec"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+
+                    <p class="text-xs text-slate-400 mt-2">
+                        ใช้ URL ที่ลงท้ายด้วย <b>/exec</b> จาก Google Apps Script
+                    </p>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+                    <button
+                        onclick="saveGasUrl()"
+                        class="px-4 py-3 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition text-sm font-semibold flex items-center justify-center gap-2">
+
+                        <i data-lucide="save" class="w-4 h-4"></i>
+
+                        บันทึก URL
+
+                    </button>
+
+
+                    <button
+                        onclick="testGasConnection()"
+                        class="px-4 py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition text-sm font-semibold flex items-center justify-center gap-2">
+
+                        <i data-lucide="wifi" class="w-4 h-4"></i>
+
+                        ทดสอบการเชื่อมต่อ
+
+                    </button>
+
+
+                    <button
+                        onclick="loadFromGoogleSheets()"
+                        class="px-4 py-3 rounded-xl bg-violet-600 text-white hover:bg-violet-700 transition text-sm font-semibold flex items-center justify-center gap-2">
+
+                        <i data-lucide="cloud-download" class="w-4 h-4"></i>
+
+                        ดึงข้อมูลจาก Sheets
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Sync Information -->
+            <div class="card p-5 sm:p-6 mb-6">
+
+                <div class="flex items-start gap-4">
+
+                    <div
+                        class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+
+                        <i data-lucide="cloud" class="w-5 h-5"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-bold text-slate-800 mb-2">
+                            การทำงานของ Google Sheets
+                        </h3>
+
+                        <div class="space-y-2 text-sm text-slate-500">
+
+                            <p class="flex gap-2">
+
+                                <span class="text-emerald-600">●</span>
+
+                                <span>
+                                    เมื่อบันทึกข้อมูล ระบบจะเก็บข้อมูลไว้ใน Browser ก่อน
+                                </span>
+
+                            </p>
+
+                            <p class="flex gap-2">
+
+                                <span class="text-emerald-600">●</span>
+
+                                <span>
+                                    หากตั้งค่า Google Sheets URL แล้ว ระบบจะ Sync ข้อมูลไปยัง Google Sheets
+                                </span>
+
+                            </p>
+
+                            <p class="flex gap-2">
+
+                                <span class="text-violet-600">●</span>
+
+                                <span>
+                                    ปุ่ม "ดึงข้อมูลจาก Sheets" ใช้โหลดข้อมูลจาก Google Sheets กลับเข้ามาในเครื่อง
+                                </span>
+
+                            </p>
+
+                            <p class="flex gap-2">
+
+                                <span class="text-blue-600">●</span>
+
+                                <span>
+                                    ปุ่ม "Sync ทั้งหมด" จะส่งข้อมูลทั้งหมดในเครื่องขึ้นไปยัง Google Sheets
+                                </span>
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Data Management -->
+            <div class="card p-5 sm:p-6">
+
+                <div class="flex items-start gap-4 mb-5">
+
+                    <div
+                        class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+
+                        <i data-lucide="database" class="w-5 h-5"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="font-bold text-slate-800">
+                            การจัดการข้อมูล
+                        </h3>
+
+                        <p class="text-sm text-slate-400 mt-1">
+                            ข้อมูลในเครื่องจะถูกเก็บไว้ใน Local Storage ของ Browser
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-700">
+
+                    <div class="flex gap-3">
+
+                        <i data-lucide="triangle-alert" class="w-5 h-5 shrink-0"></i>
+
+                        <div>
+
+                            <p class="font-semibold mb-1">
+                                คำแนะนำ
+                            </p>
+
+                            <p class="text-xs sm:text-sm leading-relaxed">
+                                ควร Sync ข้อมูลไป Google Sheets เป็นระยะ
+                                เพื่อป้องกันข้อมูลใน Browser สูญหาย
+                                โดยเฉพาะหากมีการล้างข้อมูลเว็บไซต์หรือเปลี่ยน Browser
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+        <div
+            class="border-t border-slate-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
+
+            <span>
+                Suki Roll Daily Tracker
+            </span>
+
+            <span>
+                Version 3.1
+            </span>
+
         </div>
-      </div>
-    `;
 
-    attachEvents();
-  }
+    </footer>
 
-  function recordCardHtml(e) {
-    const net = (e.revenue || 0) - (e.cost || 0);
-    const qtyText = (e.qty && e.qty > 0) ? `${e.qty} ${e.unit || ''}`.trim() : '';
-    
-    return `
-      <div class="record-item">
-        <div class="record-top">
-          <div style="display:flex; align-items:center; gap:8px;">
-            ${e.category ? `<span class="record-cat">${escapeHtml(e.category)}</span>` : ''}
-            <span class="record-name">${escapeHtml(e.name)}</span>
-          </div>
-          <span class="record-qty">${escapeHtml(qtyText)}</span>
-        </div>
-        <div class="record-details">
-          <div>ซื้อมา: <span class="record-num-bold" style="color:var(--orange-text)">฿${money(e.cost || 0)}</span></div>
-          <div>ขายได้: <span class="record-num-bold" style="color:var(--green-text)">฿${money(e.revenue || 0)}</span></div>
-          <div>กำไร: <span class="record-num-bold" style="color:${net >= 0 ? 'var(--green-text)' : 'var(--red-text)'}">${net >= 0 ? '+' : ''}฿${money(net)}</span></div>
-        </div>
-        <button class="btn-delete-big" data-id="${e.id}">🗑️ ลบรายการนี้</button>
-      </div>
-    `;
-  }
 
-  function escapeHtml(s) {
-    const div = document.createElement('div');
-    div.textContent = s;
-    return div.innerHTML;
-  }
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
 
-  function exportJson() {
-    const payload = { exportedAt: new Date().toISOString(), entries };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `ledger-${todayStr()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+    <script src="script.js"></script>
 
-  function handleImportFile(file) {
-    const reader = new FileReader();
-    reader.onload = async (ev) => {
-      try {
-        const parsed = JSON.parse(ev.target.result);
-        const incoming = Array.isArray(parsed) ? parsed : (parsed.entries || null);
-        if (!incoming) throw new Error('รูปแบบไฟล์ไม่ถูกต้อง');
 
-        const replace = confirm(`พบ ${incoming.length} รายการ\nกด "ตกลง" เพื่อแทนที่ข้อมูลเดิม หรือ "ยกเลิก" เพื่อรวมข้อมูลเข้าด้วยกัน`);
-        const formatted = incoming.map(e => ({
-          id: e.id || (Date.now() + '-' + Math.random().toString(36).slice(2, 7)),
-          date: e.date,
-          name: e.name,
-          category: e.category || '',
-          qty: e.qty !== undefined ? parseFloat(e.qty) : 1,
-          unit: e.unit || '',
-          cost: e.cost !== undefined ? e.cost : 0,
-          revenue: e.revenue !== undefined ? e.revenue : 0
-        }));
+    <!-- =========================================================
+         INITIAL ICON LOAD
+    ========================================================== -->
 
-        if (replace) {
-          entries = formatted;
-        } else {
-          const existingIds = new Set(entries.map(e => String(e.id)));
-          entries = entries.concat(formatted.filter(e => !existingIds.has(String(e.id))));
-        }
-        await saveEntries();
-        render();
-      } catch (err) {
-        alert('นำเข้าไม่สำเร็จ: ' + err.message);
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  function attachEvents() {
-    const exportBtn = document.getElementById('export-json');
-    const importBtn = document.getElementById('import-json');
-    const importFile = document.getElementById('import-file');
-    if (exportBtn) exportBtn.onclick = exportJson;
-    if (importBtn) importBtn.onclick = () => importFile.click();
-    if (importFile) importFile.onchange = (ev) => {
-      if (ev.target.files[0]) handleImportFile(ev.target.files[0]);
-      importFile.value = '';
-    };
-
-    document.getElementById('prev-day')?.addEventListener('click', () => { selectedDate = addDays(selectedDate, -1); render(); });
-    document.getElementById('next-day')?.addEventListener('click', () => { selectedDate = addDays(selectedDate, 1); render(); });
-    document.getElementById('date-picker')?.addEventListener('change', (ev) => { selectedDate = ev.target.value; render(); });
-    document.getElementById('jump-today')?.addEventListener('click', () => { selectedDate = todayStr(); render(); });
-    document.getElementById('overview-toggle')?.addEventListener('click', () => { overviewOpen = !overviewOpen; render(); });
-
-    const nameSelect = document.getElementById('f-name');
-    const qtyInput = document.getElementById('f-qty');
-    const unitPriceInput = document.getElementById('f-unit-price');
-    const autoCalcBox = document.getElementById('auto-calc-box');
-    const costInput = document.getElementById('f-cost');
-    const revenueInput = document.getElementById('f-revenue');
-
-    function calculateAutoRevenue() {
-      const selectedOption = nameSelect?.options[nameSelect.selectedIndex];
-      if (!selectedOption) return;
-      
-      const defaultPrice = parseFloat(selectedOption.getAttribute('data-price')) || 0;
-      if (defaultPrice > 0) {
-        const qty = parseFloat(qtyInput.value) || 0;
-        const unitPrice = parseFloat(unitPriceInput.value) || 0;
-        revenueInput.value = qty * unitPrice;
-        costInput.value = 0;
-      }
-    }
-
-    if (nameSelect) {
-      nameSelect.onchange = () => {
-        const selectedOption = nameSelect.options[nameSelect.selectedIndex];
-        const defaultUnit = selectedOption.getAttribute('data-unit') || '';
-        const defaultPrice = selectedOption.getAttribute('data-price') || '';
-        
-        document.getElementById('f-unit').value = defaultUnit;
-        
-        if (defaultPrice) {
-          autoCalcBox.style.display = 'block';
-          unitPriceInput.value = defaultPrice;
-          calculateAutoRevenue();
-        } else {
-          autoCalcBox.style.display = 'none';
-        }
-      };
-    }
-
-    if (qtyInput) qtyInput.oninput = calculateAutoRevenue;
-    if (unitPriceInput) unitPriceInput.oninput = calculateAutoRevenue;
-
-    document.querySelectorAll('.btn-delete-big').forEach(btn => {
-      btn.onclick = async () => {
-        if (confirm('ต้องการลบรายการนี้ใช่ไหมครับ?')) {
-          entries = entries.filter(e => String(e.id) !== String(btn.dataset.id));
-          await saveEntries();
-          render();
-        }
-      };
-    });
-
-    document.querySelectorAll('.record-item[data-date]').forEach(row => {
-      row.onclick = () => {
-        selectedDate = row.dataset.date;
-        overviewOpen = false;
-        render();
-      };
-    });
-
-    const form = document.getElementById('add-form');
-    if (form) {
-      form.onsubmit = async (ev) => {
-        ev.preventDefault();
-        const sel = document.getElementById('f-name');
-        const selectedOpt = sel ? sel.options[sel.selectedIndex] : null;
-        
-        const name = sel ? sel.value : '';
-        const category = selectedOpt ? (selectedOpt.getAttribute('data-category') || '') : '';
-        const qty = parseFloat(document.getElementById('f-qty').value) || 1;
-        const unit = document.getElementById('f-unit').value.trim();
-        const cost = parseFloat(document.getElementById('f-cost').value) || 0;
-        const revenue = parseFloat(document.getElementById('f-revenue').value) || 0;
-        const errEl = document.getElementById('form-err');
-
-        if (!name) { errEl.textContent = '❌ กรุณากดเลือกรายการก่อนครับ'; return; }
-        if (cost === 0 && revenue === 0) { errEl.textContent = '❌ กรอกราคาที่ซื้อมา หรือ ราคาที่ขายได้ อย่างน้อย 1 ช่องครับ'; return; }
-
-        entries.push({
-          id: Date.now() + '-' + Math.random().toString(36).slice(2, 7),
-          date: selectedDate,
-          name, category, qty, unit, cost, revenue
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         });
-        await saveEntries();
-        render();
-      };
-    }
-  }
+    </script>
 
-  loadEntries();
-})();
-</script>
+</body>
+
+</html>
